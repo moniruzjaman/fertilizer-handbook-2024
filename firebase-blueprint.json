@@ -1,0 +1,138 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Registered farmer profile with auto-fetched device Google account credentials and farming preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID matching request.auth.uid"
+        },
+        "email": {
+          "type": "string",
+          "description": "Google email address auto-fetched from device account"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Farmer or user display name from Google Account"
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "Optional profile photo URL from Google Account"
+        },
+        "detectedAez": {
+          "type": "number",
+          "description": "Current detected Agro-Ecological Zone number (1 to 30)"
+        },
+        "detectedDistrict": {
+          "type": "string",
+          "description": "Detected Bangladesh District location name"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the user account profile was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the user account profile was last updated"
+        }
+      },
+      "required": ["userId", "email", "displayName", "createdAt", "updatedAt"]
+    },
+    "FertilizerRecord": {
+      "title": "FertilizerRecord",
+      "description": "Saved BARC FRG-2024 fertilizer calculation record for a farmer's plot",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UID of the farmer who generated this calculation"
+        },
+        "cropName": {
+          "type": "string",
+          "description": "English name of the selected crop"
+        },
+        "cropBengaliName": {
+          "type": "string",
+          "description": "Bengali name of the crop"
+        },
+        "landArea": {
+          "type": "number",
+          "description": "Entered land area in specified units"
+        },
+        "landUnit": {
+          "type": "string",
+          "description": "Unit of land measurement (DECIMAL, BIGHA, KATHA, ACRE, HECTARE)"
+        },
+        "areaInHectares": {
+          "type": "number",
+          "description": "Calculated land area in hectares"
+        },
+        "soilFertilityClass": {
+          "type": "string",
+          "description": "Selected soil fertility classification"
+        },
+        "cowdungTonnesPerHa": {
+          "type": "number",
+          "description": "Organic cowdung manure rate in tonnes per hectare"
+        },
+        "totalCostTk": {
+          "type": "number",
+          "description": "Total estimated fertilizer cost in BDT"
+        },
+        "totalBags50kg": {
+          "type": "number",
+          "description": "Total equivalent 50kg bags required"
+        },
+        "aezNumber": {
+          "type": "number",
+          "description": "Agro-Ecological Zone number where calculation applies"
+        },
+        "aezName": {
+          "type": "string",
+          "description": "Name of Agro-Ecological Zone"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the calculation was saved"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the calculation record was last updated"
+        }
+      },
+      "required": [
+        "userId",
+        "cropName",
+        "cropBengaliName",
+        "landArea",
+        "landUnit",
+        "areaInHectares",
+        "soilFertilityClass",
+        "totalCostTk",
+        "totalBags50kg",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Farmer profiles keyed by Firebase Auth UID"
+    },
+    "/users/{userId}/calculations/{calcId}": {
+      "schema": {
+        "$ref": "#/entities/FertilizerRecord"
+      },
+      "description": "Saved fertilizer calculation records per farmer"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "FRG 2024: Fertilizer Guide",
+  "description": "BARC Fertilizer Recommendation Guide 2024 (FRG-2024) calculator for Bangladesh crops. Calculate exact Urea, TSP/DAP, MoP, Gypsum, Zinc, and Boron requirements by land size and soil fertility with Gemini AI agronomy advisor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

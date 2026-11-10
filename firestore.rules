@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidUserProfile(data) {
+      return data.userId == request.auth.uid
+        && data.email is string
+        && data.email.size() > 3
+        && data.email.size() <= 150
+        && data.displayName is string
+        && data.displayName.size() > 0
+        && data.displayName.size() <= 100
+        && (!('photoUrl' in data) || (data.photoUrl is string && data.photoUrl.size() <= 500))
+        && (!('detectedAez' in data) || (data.detectedAez is number && data.detectedAez >= 1 && data.detectedAez <= 30))
+        && (!('detectedDistrict' in data) || (data.detectedDistrict is string && data.detectedDistrict.size() <= 100))
+        && data.createdAt is timestamp
+        && data.createdAt <= request.time
+        && data.updatedAt is timestamp
+        && data.updatedAt <= request.time;
+    }
+
+    function isValidFertilizerRecord(data) {
+      return data.userId == request.auth.uid
+        && data.cropName is string
+        && data.cropName.size() > 0
+        && data.cropName.size() <= 100
+        && data.cropBengaliName is string
+        && data.cropBengaliName.size() > 0
+        && data.cropBengaliName.size() <= 100
+        && data.landArea is number
+        && data.landArea > 0
+        && data.landUnit is string
+        && data.areaInHectares is number
+        && data.areaInHectares > 0
+        && data.soilFertilityClass is string
+        && (!('cowdungTonnesPerHa' in data) || (data.cowdungTonnesPerHa is number && data.cowdungTonnesPerHa >= 0))
+        && data.totalCostTk is number
+        && data.totalCostTk >= 0
+        && data.totalBags50kg is number
+        && data.totalBags50kg >= 0
+        && (!('aezNumber' in data) || (data.aezNumber is number && data.aezNumber >= 1 && data.aezNumber <= 30))
+        && (!('aezName' in data) || (data.aezName is string && data.aezName.size() <= 120))
+        && data.createdAt is timestamp
+        && data.createdAt <= request.time
+        && data.updatedAt is timestamp
+        && data.updatedAt <= request.time;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserProfile(request.resource.data);
+      allow update: if isOwner(userId)
+        && isValidUserProfile(request.resource.data)
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isOwner(userId);
+
+      match /calculations/{calcId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidFertilizerRecord(request.resource.data);
+        allow update: if isOwner(userId)
+          && isValidFertilizerRecord(request.resource.data)
+          && request.resource.data.userId == resource.data.userId
+          && request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

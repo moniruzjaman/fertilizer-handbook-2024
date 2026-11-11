@@ -7,6 +7,8 @@ import com.example.auth.AuthManager
 import com.example.calculation.FrgCalculator
 import com.example.data.AezDatabase
 import com.example.data.FrgCropsData
+import com.example.data.local.FrgLocalRepository
+import com.example.data.local.entity.CachedCalculationEntity
 import com.example.data.repository.FirestoreUserRepository
 import com.example.location.LocationAezManager
 import com.example.model.AezInfo
@@ -62,6 +64,7 @@ data class FrgUiState(
     val aiAdvice: AiAgronomyAdvice? = null,
     val isAiLoading: Boolean = false,
     val activePlot: MappedPlot? = null,
+    val recentCachedCalculations: List<CachedCalculationEntity> = emptyList(),
     val currentTab: Int = 0
 )
 
@@ -71,6 +74,7 @@ class FrgViewModel : ViewModel() {
     val uiState: StateFlow<FrgUiState> = _uiState.asStateFlow()
 
     private var userRepository: FirestoreUserRepository? = null
+    private var localRepository: FrgLocalRepository? = null
 
     init {
         recalculate()
@@ -79,6 +83,17 @@ class FrgViewModel : ViewModel() {
     }
 
     fun initRepository(context: Context) {
+        if (localRepository == null) {
+            val localRepo = FrgLocalRepository(context.applicationContext)
+            localRepository = localRepo
+            viewModelScope.launch {
+                localRepo.seedVitalGuidelinesIfEmpty()
+                localRepo.recentCalculations.collect { list ->
+                    _uiState.update { it.copy(recentCachedCalculations = list) }
+                }
+            }
+        }
+
         if (userRepository == null) {
             try {
                 val repo = FirestoreUserRepository(context.applicationContext)
@@ -329,6 +344,35 @@ class FrgViewModel : ViewModel() {
         recalculate()
     }
 
+    fun loadCachedCalculation(cached: CachedCalculationEntity) {
+        val crop = FrgCropsData.crops.firstOrNull { it.id == cached.cropId } ?: _uiState.value.selectedCrop
+        val unit = try { LandUnit.valueOf(cached.landUnit) } catch (e: Exception) { LandUnit.DECIMAL }
+        val fertility = try { SoilFertilityClass.valueOf(cached.soilFertilityClass) } catch (e: Exception) { SoilFertilityClass.LOW }
+        val aez = cached.aezNumber?.let { AezDatabase.findByAezNumber(it) } ?: _uiState.value.detectedAez
+
+        _uiState.update {
+            it.copy(
+                selectedCrop = crop,
+                selectedCategory = crop.category,
+                landArea = cached.landArea,
+                landUnit = unit,
+                soilFertilityClass = fertility,
+                cowdungTonnesPerHa = cached.cowdungTonnesPerHa,
+                useDapInsteadOfTsp = cached.useDapInsteadOfTsp,
+                detectedAez = aez,
+                locationDescription = cached.locationDescription,
+                currentTab = 0
+            )
+        }
+        recalculate()
+    }
+
+    fun deleteCachedCalculation(id: String) {
+        viewModelScope.launch {
+            localRepository?.deleteCachedCalculation(id)
+        }
+    }
+
     private fun recalculate() {
         val s = _uiState.value
         val newResult = FrgCalculator.calculate(
@@ -342,5 +386,13 @@ class FrgViewModel : ViewModel() {
             locationDescription = s.locationDescription
         )
         _uiState.update { it.copy(result = newResult) }
+
+        viewModelScope.launch {
+            try {
+                localRepository?.cacheCalculation(newResult)
+            } catch (e: Exception) {
+                // Ignore background caching error
+            }
+        }
     }
 }

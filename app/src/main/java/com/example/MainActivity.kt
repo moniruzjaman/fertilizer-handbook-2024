@@ -15,9 +15,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -349,6 +351,7 @@ class MainActivity : ComponentActivity() {
                         UserAccountDialog(
                             user = state.currentUser,
                             savedCalculations = state.savedCalculations,
+                            cachedCalculations = state.recentCachedCalculations,
                             language = state.language,
                             onDismiss = { showAccountDialog = false },
                             onAuthSuccess = { user ->
@@ -359,6 +362,10 @@ class MainActivity : ComponentActivity() {
                             },
                             onDeleteCalculation = { calcId ->
                                 viewModel.deleteSavedCalculation(calcId)
+                            },
+                            onLoadCachedCalculation = { entity ->
+                                viewModel.loadCachedCalculation(entity)
+                                showAccountDialog = false
                             }
                         )
                     }

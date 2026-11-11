@@ -58,15 +58,19 @@ import com.example.ui.theme.AgrigreenPrimary
 import com.example.util.AppLanguage
 import com.google.firebase.auth.FirebaseUser
 
+import com.example.data.local.entity.CachedCalculationEntity
+
 @Composable
 fun UserAccountDialog(
     user: FirebaseUser?,
     savedCalculations: List<SavedCalculation>,
+    cachedCalculations: List<CachedCalculationEntity> = emptyList(),
     language: AppLanguage,
     onDismiss: () -> Unit,
     onAuthSuccess: (FirebaseUser) -> Unit,
     onSignOut: () -> Unit,
-    onDeleteCalculation: (String) -> Unit
+    onDeleteCalculation: (String) -> Unit,
+    onLoadCachedCalculation: (CachedCalculationEntity) -> Unit = {}
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -227,7 +231,79 @@ fun UserAccountDialog(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(14.dp))
+                    // Room Local Storage Offline Cache Section
+                    if (cachedCalculations.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(14.dp))
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = if (language == AppLanguage.BANGLA) "📶 অফলাইন ক্যাশ (Room DB: ${cachedCalculations.size})" else "📶 Offline Cache (Room DB: ${cachedCalculations.size})",
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = AgrigreenDark
+                            )
+                            Text(
+                                text = if (language == AppLanguage.BANGLA) "ইন্টারনেট ছাড়া ব্যবহারযোগ্য" else "Works 100% Offline",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth().height(140.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            items(cachedCalculations) { item ->
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(Color(0xFFE8F5E9))
+                                        .border(1.dp, AgrigreenPrimary.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                text = "${item.cropBengaliName} (${item.cropName})",
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 12.sp,
+                                                color = Color(0xFF1B5E20)
+                                            )
+                                            Text(
+                                                text = "AEZ ${item.aezNumber} • ${item.landArea} ${item.landUnit} • ৳ ${String.format("%.0f", item.totalCostTk)}",
+                                                fontSize = 11.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                        Button(
+                                            onClick = { onLoadCachedCalculation(item) },
+                                            colors = ButtonDefaults.buttonColors(containerColor = AgrigreenPrimary),
+                                            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 4.dp),
+                                            modifier = Modifier.height(30.dp)
+                                        ) {
+                                            Text(
+                                                text = if (language == AppLanguage.BANGLA) "লোড" else "Load",
+                                                fontSize = 11.sp
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     OutlinedButton(
                         onClick = {
@@ -301,6 +377,80 @@ fun UserAccountDialog(
                                 color = MaterialTheme.colorScheme.error,
                                 style = MaterialTheme.typography.labelSmall
                             )
+                        }
+
+                        // Room Local Storage Offline Cache Section (Accessible without Google sign in)
+                        if (cachedCalculations.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = if (language == AppLanguage.BANGLA) "📶 অফলাইন ক্যাশ (Room DB: ${cachedCalculations.size})" else "📶 Offline Cache (Room DB: ${cachedCalculations.size})",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AgrigreenDark
+                                )
+                                Text(
+                                    text = if (language == AppLanguage.BANGLA) "ডিভাইসে সংরক্ষিত" else "Saved locally",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(6.dp))
+
+                            LazyColumn(
+                                modifier = Modifier.fillMaxWidth().height(140.dp),
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                items(cachedCalculations) { item ->
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(8.dp))
+                                            .background(Color(0xFFE8F5E9))
+                                            .border(1.dp, AgrigreenPrimary.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                            .padding(horizontal = 10.dp, vertical = 6.dp)
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Column(modifier = Modifier.weight(1f)) {
+                                                Text(
+                                                    text = "${item.cropBengaliName} (${item.cropName})",
+                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 12.sp,
+                                                    color = Color(0xFF1B5E20)
+                                                )
+                                                Text(
+                                                    text = "AEZ ${item.aezNumber} • ${item.landArea} ${item.landUnit} • ৳ ${String.format("%.0f", item.totalCostTk)}",
+                                                    fontSize = 11.sp,
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                )
+                                            }
+                                            Button(
+                                                onClick = { onLoadCachedCalculation(item) },
+                                                colors = ButtonDefaults.buttonColors(containerColor = AgrigreenPrimary),
+                                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 4.dp),
+                                                modifier = Modifier.height(30.dp)
+                                            ) {
+                                                Text(
+                                                    text = if (language == AppLanguage.BANGLA) "লোড" else "Load",
+                                                    fontSize = 11.sp
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

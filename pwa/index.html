@@ -377,6 +377,35 @@
       </div>
     </div>
 
+    <!-- Respiratory & Air-Quality Safety Information (Updated 12 Nov 2026) -->
+    <div class="card">
+      <h2 id="resp-title">🫁 শ্বাস-প্রশ্বাস ও বায়ুগত নিরাপত্তা তথ্য (Respiratory &amp; Air-Quality Safety)</h2>
+      <p id="resp-intro" style="font-size:0.78rem; color:var(--text-muted); margin-bottom:10px;">
+        সার ও কীটনাশক প্রয়োগের সময় শ্বাসতন্ত্র সুরক্ষায় নিচের হালনাগাদ তথ্য মেনে চলুন। তথ্য হালনাগাদ: ১২ নভেম্বর ২০২৬ (Information updated: 12 Nov 2026)।
+      </p>
+      <ul style="font-size:0.78rem; color:var(--text-main); line-height:1.6; padding-left:18px; margin-bottom:10px;">
+        <li id="resp-li-1">ইউরিয়া/অ্যামোনিয়ামূলক সার প্রয়োগের সময় নির্গত অ্যামোনিয়া গ্যাস শ্বাসনালী ও ফুসফুসে জ্বালাপোড়া সৃষ্টি করতে পারে — অবশ্যই N95/FFP2 মাস্ক পরুন এবং বাতাস চলাচলের উপযুক্ত সময়ে (সকাল/সন্ধ্যা) প্রয়োগ করুন।</li>
+        <li id="resp-li-2">ধুলোজাত সার (TSP/DAP/MoP) ছিটানোর সময় সৃষ্ট ধুলা ঘন শ্বাস, হাঁচি ও শ্বাসকষ্টের মতো লক্ষণ ডেকে আনে — মুখে কাপড়/মাস্ক ও চোখে গগলস ব্যবহার করুন।</li>
+        <li id="resp-li-3">কীটনাশক স্প্রে করার পর অন্তত ৪৮ ঘণ্টা ক্ষেতে প্রবেশ করবেন না; শ্বাসকষ্ট, বুকে ব্যথা বা দ্রুত শ্বাসপড়া অনুভব করলে সঙ্গে সঙ্গে পরিষ্কার বাতাসে যান এবং নিকটস্থ স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।</li>
+        <li id="resp-li-4">গোবর, ধানের খল ও আবর্জনা থেকে নির্গত মিথেন/হাইড্রোজেন-সালফাইড গ্যাস থেকে শ্বাসতন্ত্র রক্ষায় গোয়াল/কম্পোস্ট ট্যাংক খোলার সময় বাতাসের বিপরীত (upwind) দিকে দাঁড়ান।</li>
+        <li id="resp-li-5">বায়ুর গুণাগুণ সূচক (AQI) বেশি থাকা দিনে (হিমসাগু/ধোঁয়ায় ঢাকা সময়ে) মাঠে কাজ কমান এবং নিচের সরকারি পোর্টাল থেকে লাইভ AQI যাচাই করুন।</li>
+      </ul>
+      <div class="links-grid">
+        <a href="https://www.doee.gov.bd/" target="_blank" class="ext-link">
+          <span>🌬️ পরিবেশ, বন ও জলবায়ু পরিবর্তন মন্ত্রণালয় — বাংলাদেশ বায়ুর গুণাগুণ (AQI)</span>
+          <span>↗</span>
+        </a>
+        <a href="https://airnow.gov/" target="_blank" class="ext-link">
+          <span>💨 US EPA AirNow — বৈশ্বিক AQI ও শ্বাস-প্রশ্বাস সতর্কতা স্তর</span>
+          <span>↗</span>
+        </a>
+        <a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health" target="_blank" class="ext-link">
+          <span>🫁 WHO — Ambient Air Pollution &amp; Respiratory Health (Fact Sheet)</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+
     <!-- Official Agricultural Resources & Builder Profile -->
     <div class="card">
       <h2 id="links-title">🔗 জাতীয় কৃষি পোর্টাল ও রিসোর্স</h2>
@@ -479,6 +508,13 @@
       document.getElementById('lbl-total-cost').innerText = isEnglish ? 'Estimated Subsidized Fertilizer Cost:' : 'মোট আনুমানিক সরকারি ভর্তুকিমূল্য সার খরচ:';
       document.getElementById('cache-title').innerText = isEnglish ? '📋 Saved Fertilizer Calculations (Local Offline Cache)' : '📋 সংরক্ষিত সার হিসাব (Local Offline Cache)';
       document.getElementById('links-title').innerText = isEnglish ? '🔗 National Agricultural Portals & Resources' : '🔗 জাতীয় কৃষি পোর্টাল ও রিসোর্স';
+      document.getElementById('resp-title').innerText = isEnglish ? '🫁 Respiratory & Air-Quality Safety Information' : '🫁 শ্বাস-প্রশ্বাস ও বায়ুগত নিরাপত্তা তথ্য (Respiratory & Air-Quality Safety)';
+      document.getElementById('resp-intro').innerText = isEnglish ? 'Follow the updated guidance below to protect your respiratory system while applying fertilizers and pesticides. Information updated: 12 Nov 2026.' : 'সার ও কীটনাশক প্রয়োগের সময় শ্বাসতন্ত্র সুরক্ষায় নিচের হালনাগাদ তথ্য মেনে চলুন। তথ্য হালনাগাদ: ১২ নভেম্বর ২০২৬ (Information updated: 12 Nov 2026)।';
+      document.getElementById('resp-li-1').innerText = isEnglish ? 'Ammonia gas released when applying urea/ammonium-based fertilizers can irritate the airways and lungs — always wear an N95/FFP2 mask and apply during breezy periods (morning/evening).' : 'ইউরিয়া/অ্যামোনিয়ামূলক সার প্রয়োগের সময় নির্গত অ্যামোনিয়া গ্যাস শ্বাসনালী ও ফুসফুসে জ্বালাপোড়া সৃষ্টি করতে পারে — অবশ্যই N95/FFP2 মাস্ক পরুন এবং বাতাস চলাচলের উপযুক্ত সময়ে (সকাল/সন্ধ্যা) প্রয়োগ করুন।';
+      document.getElementById('resp-li-2').innerText = isEnglish ? 'Dust generated while broadcasting granular fertilizers (TSP/DAP/MoP) causes rapid breathing, sneezing and breathlessness — use a face mask/cloth and goggles.' : 'ধুলোজাত সার (TSP/DAP/MoP) ছিটানোর সময় সৃষ্ট ধুলা ঘন শ্বাস, হাঁচি ও শ্বাসকষ্টের মতো লক্ষণ ডেকে আনে — মুখে কাপড়/মাস্ক ও চোখে গগলস ব্যবহার করুন।';
+      document.getElementById('resp-li-3').innerText = isEnglish ? 'Do not enter sprayed fields for at least 48 hours after pesticide application; if you feel breathlessness, chest pain or fast breathing, move to fresh air immediately and contact the nearest health facility.' : 'কীটনাশক স্প্রে করার পর অন্তত ৪৮ ঘণ্টা ক্ষেতে প্রবেশ করবেন না; শ্বাসকষ্ট, বুকে ব্যথা বা দ্রুত শ্বাসপড়া অনুভব করলে সঙ্গে সঙ্গে পরিষ্কার বাতাসে যান এবং নিকটস্থ স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।';
+      document.getElementById('resp-li-4').innerText = isEnglish ? 'To protect your airways from methane/hydrogen-sulfide gases from dung, rice straw and organic waste, stand upwind when opening sheds/compost tanks.' : 'গোবর, ধানের খল ও আবর্জনা থেকে নির্গত মিথেন/হাইড্রোজেন-সালফাইড গ্যাস থেকে শ্বাসতন্ত্র রক্ষায় গোয়াল/কম্পোস্ট ট্যাংক খোলার সময় বাতাসের বিপরীত (upwind) দিকে দাঁড়ান।';
+      document.getElementById('resp-li-5').innerText = isEnglish ? 'Reduce field work on high Air Quality Index (AQI) days (haze/smog) and check live AQI via the official portals below.' : 'বায়ুর গুণাগুণ সূচক (AQI) বেশি থাকা দিনে (হিমসাগু/ধোঁয়ায় ঢাকা সময়ে) মাঠে কাজ কমান এবং নিচের সরকারি পোর্টাল থেকে লাইভ AQI যাচাই করুন।';
       document.getElementById('gps-status-text').innerText = isEnglish ? '📍 Auto-detect AEZ with live GPS' : '📍 লাইভ জিপিএস দিয়ে AEZ স্বয়ংক্রিয় সনাক্ত করুন';
       document.getElementById('btn-detect-gps').innerText = isEnglish ? 'Detect Location' : 'জিপিএস চালু করুন';
       

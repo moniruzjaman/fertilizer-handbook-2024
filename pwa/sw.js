@@ -1,4 +1,4 @@
-const CACHE_NAME = 'frg-2024-pwa-v1';
+const CACHE_NAME = 'frg-2024-pwa-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

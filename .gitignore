@@ -17,3 +17,7 @@ local.properties
 .env
 debug.keystore
 *-debug.log
+
+dist/
+node_modules/
+dev-server.log

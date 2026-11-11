@@ -1,0 +1,15 @@
+{
+  "name": "frg-2024-pwa",
+  "version": "1.1.0",
+  "private": true,
+  "description": "BARC FRG-2024 Fertilizer Recommendation Guide — offline PWA companion (static site in ./pwa)",
+  "scripts": {
+    "dev": "http-server pwa -p 8080 -c-1",
+    "start": "npm run dev",
+    "build": "node build.mjs",
+    "test": "node --experimental-vm-modules firestore.test.js"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

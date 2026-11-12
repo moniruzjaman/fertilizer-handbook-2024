@@ -1,0 +1,39 @@
+name: CI — build & validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      - name: Test (Firestore rules; skipped unless emulator is running)
+        run: npm test
+      - name: Smoke-check dist/
+        run: |
+          test -f dist/index.html
+          test -f dist/manifest.webmanifest
+          test -f dist/sw.js
+          test -f dist/icon-192.png
+          test -f dist/icon-512.png
+          test -f dist/.nojekyll
+          grep -q "FRG 2024" dist/index.html
+          echo "dist/ smoke checks passed"

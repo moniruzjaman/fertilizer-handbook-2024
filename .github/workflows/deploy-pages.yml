@@ -15,7 +15,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Ensures GitHub Pages is enabled (Source: GitHub Actions) even on first run.
+  # Harmless no-op once Pages is already set to "workflow" build type.
+  enable-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable GitHub Pages (workflow build type)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$REPO/pages")
+          echo "Pages API status: $STATUS"
+          if [ "$STATUS" = "404" ]; then
+            curl -s -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$REPO/pages" \
+              -d '{"build_type":"workflow"}'
+          fi
+
   build:
+    needs: enable-pages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

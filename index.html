@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FRG 2024: সার সুপারিশমালা হাতবই (BARC)</title>
+  <meta name="description" content="বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) সার সুপারিশমালা হাতবই ২০২৪ - কৃষি সম্প্রসারণ অধিদপ্তর (DAE) নির্দেশিত ১০০% অফলাইন সার ক্যালকুলেটর ও পিডব্লিউএ">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1B5E20">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root {
+      --primary: #1B5E20;
+      --primary-light: #2E7D32;
+      --accent: #E65100;
+      --bg: #F5F7F5;
+      --card-bg: #FFFFFF;
+      --text-main: #1C271E;
+      --text-muted: #556B59;
+      --border: #DCE3DD;
+      --radius: 12px;
+      --shadow: 0 3px 10px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hind Siliguri", "Kalpurush", sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); line-height: 1.5; padding-bottom: 50px; }
+    
+    header { background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%); color: white; padding: 16px 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .header-content { max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .header-title h1 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+    .header-title p { font-size: 0.72rem; opacity: 0.9; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .lang-badge { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,255,255,0.4); color: white; }
+    .install-pwa-btn { background: #FFB300; color: #3E2723; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; border: none; cursor: pointer; display: none; }
+
+    .container { max-width: 680px; margin: 12px auto; padding: 0 14px; }
+    
+    /* DAE Advisory Alert */
+    .dae-alert {
+      background: #FFF3E0;
+      border: 1.5px solid #FF9800;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    .dae-alert h3 { color: #BF360C; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .dae-alert p { font-size: 0.75rem; color: #5D4037; line-height: 1.45; }
+
+    /* Offline Status Badge */
+    .offline-bar {
+      background: #E8F5E9;
+      border: 1px solid #A5D6A7;
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #1B5E20;
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .card h2 { font-size: 1rem; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+    select, input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      font-size: 0.9rem;
+      background: #FAFAFA;
+      color: var(--text-main);
+      outline: none;
+      transition: border 0.2s;
+    }
+    select:focus, input:focus { border-color: var(--primary); background: #FFF; }
+    .row { display: flex; gap: 10px; }
+    .col { flex: 1; }
+
+    .btn {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 3px 6px rgba(27,94,32,0.3);
+      transition: background 0.2s;
+    }
+    .btn:active { background: #144818; }
+    .btn-secondary { background: #F1F8E9; color: var(--primary); border: 1.5px solid var(--primary); box-shadow: none; margin-top: 8px; }
+    .btn-action-row { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-half { flex: 1; padding: 10px; font-size: 0.82rem; }
+
+    /* GPS Live Banner inside PWA */
+    .gps-bar {
+      background: #F1F8E9;
+      border: 1px dashed #81C784;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .gps-bar span { font-size: 0.75rem; color: #1B5E20; font-weight: 600; }
+    .gps-btn {
+      background: #1B5E20;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Results Grid */
+    .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+    .result-tile {
+      background: #F9FBF9;
+      border: 1px solid #DCE3DD;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .result-tile.highlight { background: #E8F5E9; border-color: #81C784; }
+    .fert-name { font-size: 0.8rem; font-weight: 700; color: #1B5E20; }
+    .fert-amount { font-size: 1.15rem; font-weight: 800; color: #1C271E; margin: 3px 0; }
+    .fert-cost { font-size: 0.75rem; color: #666; }
+
+    .total-cost-box {
+      background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+      border: 1.5px solid #81C784;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .total-cost-box .label { font-size: 0.8rem; font-weight: 600; color: #1B5E20; }
+    .total-cost-box .amount { font-size: 1.4rem; font-weight: 800; color: #004D40; }
+
+    /* Saved Cache List */
+    .cache-item {
+      background: #F5F7F5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+    .cache-item strong { color: var(--primary); }
+
+    /* Official Portal Links */
+    .links-grid { display: flex; flex-direction: column; gap: 8px; }
+    .ext-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #F8F9FA;
+      border: 1px solid var(--border);
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .ext-link:hover { background: #E8F5E9; }
+
+    footer { text-align: center; font-size: 0.72rem; color: var(--text-muted); margin-top: 20px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <h1 id="ui-title">🌾 সার সুপারিশমালা হাতবই ২০২৪ (PWA)</h1>
+        <p id="ui-subtitle">BARC Fertilizer Recommendation Guide (FRG-2024)</p>
+      </div>
+      <div class="header-actions">
+        <button id="pwa-install-btn" class="install-pwa-btn" onclick="triggerPwaInstall()">📲 ইন্সটল করুন</button>
+        <button class="lang-badge" id="lang-btn" onclick="toggleLanguage()">English</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- DAE Official Statutory Advisory -->
+    <div class="dae-alert">
+      <h3 id="dae-title">⚠️ কৃষি সম্প্রসারণ অধিদপ্তর (DAE) বিধিবদ্ধ সতর্কবার্তা</h3>
+      <p id="dae-text">
+        জমিতে রাসায়নিক বা জৈব সার প্রয়োগের পূর্বে অবশ্যই আপনার ব্লকের উপসহকারী কৃষি কর্মকর্তা (SAAO) বা উপজেলা কৃষি অফিসের সাথে সরাসরি পরামর্শ করা এবং মৃত্তিকা সম্পদ উন্নয়ন ইনস্টিটিউট (SRDI) এর মাধ্যমে মাটি পরীক্ষা করে নেওয়া বাধ্যতামূলক।
+      </p>
+    </div>
+
+    <!-- PWA Offline Status -->
+    <div class="offline-bar">
+      <span>📶 <span id="pwa-offline-mode">অফলাইন পিডব্লিউএ ক্যাশ সক্রিয় (১০০% অফলাইনে চলবে)</span></span>
+      <span id="conn-status" style="font-size: 0.7rem; color: #2E7D32;">● রেডি</span>
+    </div>
+
+    <!-- Calculator Card -->
+    <div class="card">
+      <h2 id="calc-card-title">🌱 ফসলের সার হিসাব ক্যালকুলেটর</h2>
+
+      <!-- GPS Location Fetcher for Auto-AEZ -->
+      <div class="gps-bar">
+        <span id="gps-status-text">📍 লাইভ জিপিএস দিয়ে AEZ স্বয়ংক্রিয় সনাক্ত করুন</span>
+        <button class="gps-btn" id="btn-detect-gps" onclick="detectLiveAez()">জিপিএস চালু করুন</button>
+      </div>
+
+      <div class="form-group">
+        <label id="lbl-crop">ফসল নির্বাচন করুন (Crop)</label>
+        <select id="crop-select" onchange="calculateFertilizer()">
+          <option value="boro">বোরো ধান (Boro Rice - High Yielding)</option>
+          <option value="aman">রোপা আমন ধান (Transplanted Aman Rice)</option>
+          <option value="aus">আউশ ধান (Aus Rice)</option>
+          <option value="wheat">গম (Wheat - BARI Gom)</option>
+          <option value="maize">ভুট্টা (Hybrid Maize)</option>
+          <option value="potato">আলু (Potato - Diamant/Cardinal)</option>
+          <option value="mustard">সরিষা (Mustard - BARI Sarisha)</option>
+          <option value="lentil">মসুর ডাল (Lentil)</option>
+          <option value="tomato">টমেটো (Tomato - Hybrid)</option>
+          <option value="chili">মরিচ (Chili/Pepper)</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <div class="col form-group">
+          <label id="lbl-aez">কৃষি পরিবেশ অঞ্চল (AEZ)</label>
+          <select id="aez-select" onchange="calculateFertilizer()">
+            <option value="1">AEZ 1: পুরাতন হিমালয় পাদদেশীয় সমভূমি</option>
+            <option value="2">AEZ 2: তিস্তা পললভূমি</option>
+            <option value="3">AEZ 3: তিস্তা চরাঞ্চল ও সমভূমি</option>
+            <option value="4">AEZ 4: করোতোয়া-বাঙালি পললভূমি</option>
+            <option value="5">AEZ 5: নিম্ন আত্রাই অববাহিকা</option>
+            <option value="6">AEZ 6: নিম্ন পুনর্ভবা সমভূমি</option>
+            <option value="7">AEZ 7: সক্রিয় ব্রহ্মপুত্র পললভূমি</option>
+            <option value="8">AEZ 8: তরুণ ব্রহ্মপুত্র পললভূমি</option>
+            <option value="9">AEZ 9: পুরাতন ব্রহ্মপুত্র পললভূমি</option>
+            <option value="10">AEZ 10: সক্রিয় গঙ্গা পললভূমি</option>
+            <option value="11">AEZ 11: উচ্চ গঙ্গা নদী পললভূমি</option>
+            <option value="12">AEZ 12: নিম্ন গঙ্গা নদী পললভূমি</option>
+            <option value="13">AEZ 13: গঙ্গা জোয়ারভাটা পললভূমি</option>
+            <option value="14">AEZ 14: গোপালগঞ্জ-খুলনা বিল সমভূমি</option>
+            <option value="15">AEZ 15: এরিয়াল বিল অববাহিকা</option>
+            <option value="16">AEZ 16: মধ্য মেঘনা পললভূমি</option>
+            <option value="17">AEZ 17: নিম্ন মেঘনা পললভূমি</option>
+            <option value="18">AEZ 18: তরুণ মেঘনা নদী মোহনা পললভূমি</option>
+            <option value="19">AEZ 19: পুরাতন মেঘনা মোহনা পললভূমি</option>
+            <option value="20">AEZ 20: পূর্ব ও উত্তর প্রান্তীয় সমভূমি</option>
+            <option value="21">AEZ 21: সিলেট অববাহিকা</option>
+            <option value="22">AEZ 22: উত্তর ও পূর্ব পাইডমন্ট সমভূমি</option>
+            <option value="23">AEZ 23: চট্টগ্রাম উপকূলীয় সমভূমি</option>
+            <option value="24">AEZ 24: সেন্টমার্টিন প্রবাল দ্বীপ</option>
+            <option value="25">AEZ 25: বরেন্দ্র অঞ্চল (স্তরীভূত)</option>
+            <option value="26">AEZ 26: উচ্চ বরেন্দ্র সমভূমি</option>
+            <option value="27">AEZ 27: উত্তর-পূর্ব বরেন্দ্র অঞ্চল</option>
+            <option value="28">AEZ 28: মধুপুর গড় (লাল মাটি)</option>
+            <option value="29">AEZ 29: উত্তর ও পূর্ব পাহাড়িয়া অঞ্চল</option>
+            <option value="30">AEZ 30: আকহাউড়া উচ্চভূমি</option>
+          </select>
+        </div>
+
+        <div class="col form-group">
+          <label id="lbl-yield">ফলন লক্ষ্যমাত্রা (Yield Goal)</label>
+          <select id="yield-select" onchange="calculateFertilizer()">
+            <option value="high">উচ্চ ফলন (High Yield)</option>
+            <option value="optimum">মধ্যম/ভারসাম্যপূর্ণ (Optimum)</option>
+            <option value="moderate">সাধারণ (Moderate)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col form-group">
+          <label id="lbl-area">জমির পরিমাণ</label>
+          <input type="number" id="land-area" value="33" min="1" step="0.5" oninput="calculateFertilizer()">
+        </div>
+        <div class="col form-group">
+          <label id="lbl-unit">পরিমাপ একক</label>
+          <select id="land-unit" onchange="calculateFertilizer()">
+            <option value="decimal">শতক / ডেসিমাল (Decimal)</option>
+            <option value="bigha">বিঘা (৩৩ শতক / Bigha)</option>
+            <option value="katha">কাঠা (১.৬৫ শতক / Katha)</option>
+            <option value="acre">একর (১০০ শতক / Acre)</option>
+            <option value="hectare">হেক্টর (২৪৭ শতক / Hectare)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div id="results-container">
+        <div class="results-grid">
+          <div class="result-tile highlight">
+            <div class="fert-name">ইউরিয়া (Urea)</div>
+            <div class="fert-amount" id="res-urea">0 কেজি</div>
+            <div class="fert-cost" id="cost-urea">৳ 0</div>
+          </div>
+          <div class="result-tile highlight">
+            <div class="fert-name">টিএসপি / ডিএপি (TSP/DAP)</div>
+            <div class="fert-amount" id="res-tsp">0 কেজি</div>
+            <div class="fert-cost" id="cost-tsp">৳ 0</div>
+          </div>
+          <div class="result-tile highlight">
+            <div class="fert-name">এমওপি / পটাশ (MoP)</div>
+            <div class="fert-amount" id="res-mop">0 কেজি</div>
+            <div class="fert-cost" id="cost-mop">৳ 0</div>
+          </div>
+          <div class="result-tile">
+            <div class="fert-name">জিপসাম / গন্ধক (Gypsum)</div>
+            <div class="fert-amount" id="res-gypsum">0 কেজি</div>
+            <div class="fert-cost" id="cost-gypsum">৳ 0</div>
+          </div>
+          <div class="result-tile">
+            <div class="fert-name">জিংক সালফেট (Zinc)</div>
+            <div class="fert-amount" id="res-zinc">0 কেজি</div>
+            <div class="fert-cost" id="cost-zinc">৳ 0</div>
+          </div>
+          <div class="result-tile">
+            <div class="fert-name">বোরন / বোরিক এসিড (Boron)</div>
+            <div class="fert-amount" id="res-boron">0 কেজি</div>
+            <div class="fert-cost" id="cost-boron">৳ 0</div>
+          </div>
+        </div>
+
+        <div class="total-cost-box">
+          <div class="label" id="lbl-total-cost">মোট আনুমানিক সরকারি ভর্তুকিমূল্য সার খরচ:</div>
+          <div class="amount" id="res-total-cost">৳ 0</div>
+          <div style="font-size: 0.7rem; color: #1B5E20; margin-top: 4px;">* সরকারি গ্যাজেট ও উপজেলা কৃষি অফিস নির্ধারিত বর্তমান খুচরা বিক্রয়মূল্য অনুযায়ী</div>
+        </div>
+      </div>
+
+      <div class="btn-action-row">
+        <button class="btn btn-secondary btn-half" onclick="saveCalculationLocally()">
+          💾 অফলাইন সেভ
+        </button>
+        <button class="btn btn-secondary btn-half" onclick="downloadCalculationTxt()">
+          📄 রিপোর্ট ডাউনলোড
+        </button>
+      </div>
+    </div>
+
+    <!-- Offline Saved History Card -->
+    <div class="card">
+      <h2 id="cache-title">📋 সংরক্ষিত সার হিসাব (Local Offline Cache)</h2>
+      <div id="saved-list">
+        <p style="font-size: 0.75rem; color: #888;" id="no-cache-msg">কোনো হিসাব এখনও সংরক্ষিত হয়নি।</p>
+      </div>
+    </div>
+
+    <!-- Respiratory & Air-Quality Safety Information (Updated 12 Nov 2026) -->
+    <div class="card">
+      <h2 id="resp-title">🫁 শ্বাস-প্রশ্বাস ও বায়ুগত নিরাপত্তা তথ্য (Respiratory &amp; Air-Quality Safety)</h2>
+      <p id="resp-intro" style="font-size:0.78rem; color:var(--text-muted); margin-bottom:10px;">
+        সার ও কীটনাশক প্রয়োগের সময় শ্বাসতন্ত্র সুরক্ষায় নিচের হালনাগাদ তথ্য মেনে চলুন। তথ্য হালনাগাদ: ১২ নভেম্বর ২০২৬ (Information updated: 12 Nov 2026)।
+      </p>
+      <ul style="font-size:0.78rem; color:var(--text-main); line-height:1.6; padding-left:18px; margin-bottom:10px;">
+        <li id="resp-li-1">ইউরিয়া/অ্যামোনিয়ামূলক সার প্রয়োগের সময় নির্গত অ্যামোনিয়া গ্যাস শ্বাসনালী ও ফুসফুসে জ্বালাপোড়া সৃষ্টি করতে পারে — অবশ্যই N95/FFP2 মাস্ক পরুন এবং বাতাস চলাচলের উপযুক্ত সময়ে (সকাল/সন্ধ্যা) প্রয়োগ করুন।</li>
+        <li id="resp-li-2">ধুলোজাত সার (TSP/DAP/MoP) ছিটানোর সময় সৃষ্ট ধুলা ঘন শ্বাস, হাঁচি ও শ্বাসকষ্টের মতো লক্ষণ ডেকে আনে — মুখে কাপড়/মাস্ক ও চোখে গগলস ব্যবহার করুন।</li>
+        <li id="resp-li-3">কীটনাশক স্প্রে করার পর অন্তত ৪৮ ঘণ্টা ক্ষেতে প্রবেশ করবেন না; শ্বাসকষ্ট, বুকে ব্যথা বা দ্রুত শ্বাসপড়া অনুভব করলে সঙ্গে সঙ্গে পরিষ্কার বাতাসে যান এবং নিকটস্থ স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।</li>
+        <li id="resp-li-4">গোবর, ধানের খল ও আবর্জনা থেকে নির্গত মিথেন/হাইড্রোজেন-সালফাইড গ্যাস থেকে শ্বাসতন্ত্র রক্ষায় গোয়াল/কম্পোস্ট ট্যাংক খোলার সময় বাতাসের বিপরীত (upwind) দিকে দাঁড়ান।</li>
+        <li id="resp-li-5">বায়ুর গুণাগুণ সূচক (AQI) বেশি থাকা দিনে (হিমসাগু/ধোঁয়ায় ঢাকা সময়ে) মাঠে কাজ কমান এবং নিচের সরকারি পোর্টাল থেকে লাইভ AQI যাচাই করুন।</li>
+      </ul>
+      <div class="links-grid">
+        <a href="https://www.doee.gov.bd/" target="_blank" class="ext-link">
+          <span>🌬️ পরিবেশ, বন ও জলবায়ু পরিবর্তন মন্ত্রণালয় — বাংলাদেশ বায়ুর গুণাগুণ (AQI)</span>
+          <span>↗</span>
+        </a>
+        <a href="https://airnow.gov/" target="_blank" class="ext-link">
+          <span>💨 US EPA AirNow — বৈশ্বিক AQI ও শ্বাস-প্রশ্বাস সতর্কতা স্তর</span>
+          <span>↗</span>
+        </a>
+        <a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health" target="_blank" class="ext-link">
+          <span>🫁 WHO — Ambient Air Pollution &amp; Respiratory Health (Fact Sheet)</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Official Agricultural Resources & Builder Profile -->
+    <div class="card">
+      <h2 id="links-title">🔗 জাতীয় কৃষি পোর্টাল ও রিসোর্স</h2>
+      <div class="links-grid">
+        <a href="https://soil-media-portal.mithun-hstu.workers.dev/" target="_blank" class="ext-link">
+          <span>🌾 মৃত্তিকা ও সার মিডিয়া পোর্টাল (Soil Media Portal)</span>
+          <span>↗</span>
+        </a>
+        <a href="https://notebook.google.com/notebook/1218c86f-beef-4a00-a0e2-1b2624c12128" target="_blank" class="ext-link">
+          <span>📊 FRG-2024 NotebookLM এআই রিসোর্স ও স্লাইড ডেক</span>
+          <span>↗</span>
+        </a>
+        <a href="https://moniruzjaman.github.io/portfolio/" target="_blank" class="ext-link">
+          <span>👨‍💻 অ্যাপ নির্মাতা প্রোফাইল (Moniruzjaman Portfolio)</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <p>বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) সার সুপারিশমালা হাতবই ২০২৪ অনুযায়ী প্রস্তুতকৃত।</p>
+      <p>কৃষি মন্ত্রণালয় ও কৃষি সম্প্রসারণ অধিদপ্তর (DAE), গণপ্রজাতন্ত্রী বাংলাদেশ সরকার।</p>
+      <p style="margin-top: 6px;">Installable Offline PWA Companion • Fully Responsive</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('FRG 2024 PWA Service Worker registered'))
+          .catch(err => console.log('PWA Service Worker registration failed:', err));
+      });
+    }
+
+    // PWA Install Prompt handling
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('pwa-install-btn');
+      if (installBtn) installBtn.style.display = 'block';
+    });
+
+    function triggerPwaInstall() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the PWA install prompt');
+        }
+        deferredPrompt = null;
+        document.getElementById('pwa-install-btn').style.display = 'none';
+      });
+    }
+
+    // Crop Fertilizer Data (BARC FRG-2024 kg/ha)
+    const CROP_DATA = {
+      boro:    { urea: 260, tsp: 110, mop: 140, gypsum: 75, zinc: 10, boron: 6 },
+      aman:    { urea: 180, tsp: 85,  mop: 100, gypsum: 60, zinc: 8,  boron: 4 },
+      aus:     { urea: 140, tsp: 70,  mop: 80,  gypsum: 45, zinc: 6,  boron: 3 },
+      wheat:   { urea: 220, tsp: 140, mop: 100, gypsum: 90, zinc: 10, boron: 8 },
+      maize:   { urea: 500, tsp: 240, mop: 200, gypsum: 150, zinc: 15, boron: 12 },
+      potato:  { urea: 320, tsp: 220, mop: 250, gypsum: 110, zinc: 12, boron: 10 },
+      mustard: { urea: 250, tsp: 160, mop: 85,  gypsum: 160, zinc: 8,  boron: 10 },
+      lentil:  { urea: 45,  tsp: 85,  mop: 40,  gypsum: 45, zinc: 5,  boron: 6 },
+      tomato:  { urea: 300, tsp: 200, mop: 220, gypsum: 100, zinc: 10, boron: 10 },
+      chili:   { urea: 220, tsp: 150, mop: 130, gypsum: 90, zinc: 10, boron: 8 }
+    };
+
+    // Subsidized Retail Fertilizer Prices (Tk/kg)
+    const PRICES = {
+      urea: 27,
+      tsp: 32,
+      mop: 22,
+      gypsum: 14,
+      zinc: 190,
+      boron: 280
+    };
+
+    let isEnglish = false;
+
+    function toggleLanguage() {
+      isEnglish = !isEnglish;
+      document.getElementById('lang-btn').innerText = isEnglish ? 'বাংলা' : 'English';
+      
+      document.getElementById('ui-title').innerText = isEnglish ? '🌾 Fertilizer Recommendation Guide 2024' : '🌾 সার সুপারিশমালা হাতবই ২০২৪ (PWA)';
+      document.getElementById('ui-subtitle').innerText = isEnglish ? 'BARC Fertilizer Recommendation Guide (FRG-2024)' : 'BARC Fertilizer Recommendation Guide (FRG-2024)';
+      document.getElementById('dae-title').innerText = isEnglish ? '⚠️ Department of Agricultural Extension (DAE) Mandatory Advisory' : '⚠️ কৃষি সম্প্রসারণ অধিদপ্তর (DAE) বিধিবদ্ধ সতর্কবার্তা';
+      document.getElementById('dae-text').innerText = isEnglish ? 'You must directly consult your local Sub-Assistant Agriculture Officer (SAAO) or Upazila Agriculture Office (DAE) and test your soil via SRDI before applying any fertilizers.' : 'জমিতে রাসায়নিক বা জৈব সার প্রয়োগের পূর্বে অবশ্যই আপনার ব্লকের উপসহকারী কৃষি কর্মকর্তা (SAAO) বা উপজেলা কৃষি অফিসের সাথে সরাসরি পরামর্শ করা এবং মৃত্তিকা সম্পদ উন্নয়ন ইনস্টিটিউট (SRDI) এর মাধ্যমে মাটি পরীক্ষা করে নেওয়া বাধ্যতামূলক।';
+      document.getElementById('pwa-offline-mode').innerText = isEnglish ? 'Offline PWA Cache Active (100% Offline Usable)' : 'অফলাইন পিডব্লিউএ ক্যাশ সক্রিয় (১০০% অফলাইনে চলবে)';
+      document.getElementById('calc-card-title').innerText = isEnglish ? '🌱 Crop Fertilizer Calculator' : '🌱 ফসলের সার হিসাব ক্যালকুলেটর';
+      document.getElementById('lbl-crop').innerText = isEnglish ? 'Select Crop' : 'ফসল নির্বাচন করুন (Crop)';
+      document.getElementById('lbl-aez').innerText = isEnglish ? 'Agro-Ecological Zone (AEZ)' : 'কৃষি পরিবেশ অঞ্চল (AEZ)';
+      document.getElementById('lbl-yield').innerText = isEnglish ? 'Yield Goal' : 'ফলন লক্ষ্যমাত্রা (Yield Goal)';
+      document.getElementById('lbl-area').innerText = isEnglish ? 'Land Area' : 'জমির পরিমাণ';
+      document.getElementById('lbl-unit').innerText = isEnglish ? 'Unit' : 'পরিমাপ একক';
+      document.getElementById('lbl-total-cost').innerText = isEnglish ? 'Estimated Subsidized Fertilizer Cost:' : 'মোট আনুমানিক সরকারি ভর্তুকিমূল্য সার খরচ:';
+      document.getElementById('cache-title').innerText = isEnglish ? '📋 Saved Fertilizer Calculations (Local Offline Cache)' : '📋 সংরক্ষিত সার হিসাব (Local Offline Cache)';
+      document.getElementById('links-title').innerText = isEnglish ? '🔗 National Agricultural Portals & Resources' : '🔗 জাতীয় কৃষি পোর্টাল ও রিসোর্স';
+      document.getElementById('resp-title').innerText = isEnglish ? '🫁 Respiratory & Air-Quality Safety Information' : '🫁 শ্বাস-প্রশ্বাস ও বায়ুগত নিরাপত্তা তথ্য (Respiratory & Air-Quality Safety)';
+      document.getElementById('resp-intro').innerText = isEnglish ? 'Follow the updated guidance below to protect your respiratory system while applying fertilizers and pesticides. Information updated: 12 Nov 2026.' : 'সার ও কীটনাশক প্রয়োগের সময় শ্বাসতন্ত্র সুরক্ষায় নিচের হালনাগাদ তথ্য মেনে চলুন। তথ্য হালনাগাদ: ১২ নভেম্বর ২০২৬ (Information updated: 12 Nov 2026)।';
+      document.getElementById('resp-li-1').innerText = isEnglish ? 'Ammonia gas released when applying urea/ammonium-based fertilizers can irritate the airways and lungs — always wear an N95/FFP2 mask and apply during breezy periods (morning/evening).' : 'ইউরিয়া/অ্যামোনিয়ামূলক সার প্রয়োগের সময় নির্গত অ্যামোনিয়া গ্যাস শ্বাসনালী ও ফুসফুসে জ্বালাপোড়া সৃষ্টি করতে পারে — অবশ্যই N95/FFP2 মাস্ক পরুন এবং বাতাস চলাচলের উপযুক্ত সময়ে (সকাল/সন্ধ্যা) প্রয়োগ করুন।';
+      document.getElementById('resp-li-2').innerText = isEnglish ? 'Dust generated while broadcasting granular fertilizers (TSP/DAP/MoP) causes rapid breathing, sneezing and breathlessness — use a face mask/cloth and goggles.' : 'ধুলোজাত সার (TSP/DAP/MoP) ছিটানোর সময় সৃষ্ট ধুলা ঘন শ্বাস, হাঁচি ও শ্বাসকষ্টের মতো লক্ষণ ডেকে আনে — মুখে কাপড়/মাস্ক ও চোখে গগলস ব্যবহার করুন।';
+      document.getElementById('resp-li-3').innerText = isEnglish ? 'Do not enter sprayed fields for at least 48 hours after pesticide application; if you feel breathlessness, chest pain or fast breathing, move to fresh air immediately and contact the nearest health facility.' : 'কীটনাশক স্প্রে করার পর অন্তত ৪৮ ঘণ্টা ক্ষেতে প্রবেশ করবেন না; শ্বাসকষ্ট, বুকে ব্যথা বা দ্রুত শ্বাসপড়া অনুভব করলে সঙ্গে সঙ্গে পরিষ্কার বাতাসে যান এবং নিকটস্থ স্বাস্থ্যকেন্দ্রে যোগাযোগ করুন।';
+      document.getElementById('resp-li-4').innerText = isEnglish ? 'To protect your airways from methane/hydrogen-sulfide gases from dung, rice straw and organic waste, stand upwind when opening sheds/compost tanks.' : 'গোবর, ধানের খল ও আবর্জনা থেকে নির্গত মিথেন/হাইড্রোজেন-সালফাইড গ্যাস থেকে শ্বাসতন্ত্র রক্ষায় গোয়াল/কম্পোস্ট ট্যাংক খোলার সময় বাতাসের বিপরীত (upwind) দিকে দাঁড়ান।';
+      document.getElementById('resp-li-5').innerText = isEnglish ? 'Reduce field work on high Air Quality Index (AQI) days (haze/smog) and check live AQI via the official portals below.' : 'বায়ুর গুণাগুণ সূচক (AQI) বেশি থাকা দিনে (হিমসাগু/ধোঁয়ায় ঢাকা সময়ে) মাঠে কাজ কমান এবং নিচের সরকারি পোর্টাল থেকে লাইভ AQI যাচাই করুন।';
+      document.getElementById('gps-status-text').innerText = isEnglish ? '📍 Auto-detect AEZ with live GPS' : '📍 লাইভ জিপিএস দিয়ে AEZ স্বয়ংক্রিয় সনাক্ত করুন';
+      document.getElementById('btn-detect-gps').innerText = isEnglish ? 'Detect Location' : 'জিপিএস চালু করুন';
+      
+      calculateFertilizer();
+      renderSavedList();
+    }
+
+    // Live Geolocation to AEZ Matcher (BARC Coordinates Calibration)
+    function detectLiveAez() {
+      const statusSpan = document.getElementById('gps-status-text');
+      if (!navigator.geolocation) {
+        statusSpan.innerText = isEnglish ? 'Geolocation is not supported by your browser' : 'আপনার ব্রাউজারে জিপিএস সমর্থিত নয়';
+        return;
+      }
+
+      statusSpan.innerText = isEnglish ? 'Detecting coordinates...' : 'অবস্থান নির্ণয় করা হচ্ছে...';
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          
+          let matchedAez = 9; // Default Old Brahmaputra
+          if (lat > 25.5 && lon < 89.0) matchedAez = 1; // Himalayan Piedmont
+          else if (lat > 25.0 && lon < 89.5) matchedAez = 2; // Tista
+          else if (lat > 24.5 && lon < 89.0) matchedAez = 25; // Barind
+          else if (lat > 24.5 && lon > 91.5) matchedAez = 21; // Sylhet Basin
+          else if (lat < 23.0 && lon < 90.0) matchedAez = 13; // Ganges Tidal
+          else if (lat < 23.0 && lon > 91.0) matchedAez = 23; // Chittagong Coastal
+          else if (lat > 23.8 && lat < 24.5 && lon > 90.0 && lon < 90.7) matchedAez = 28; // Madhupur Tract
+
+          document.getElementById('aez-select').value = matchedAez;
+          statusSpan.innerText = `${isEnglish ? 'Detected' : 'সনাক্তকৃত'}: ${lat.toFixed(4)}°N, ${lon.toFixed(4)}°E → AEZ ${matchedAez}`;
+          calculateFertilizer();
+        },
+        (error) => {
+          statusSpan.innerText = isEnglish ? 'GPS access denied/timed out' : 'জিপিএস অনুমতি পাওয়া যায়নি';
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    }
+
+    function calculateFertilizer() {
+      const cropKey = document.getElementById('crop-select').value;
+      const aez = parseInt(document.getElementById('aez-select').value, 10);
+      const yieldGoal = document.getElementById('yield-select').value;
+      const area = parseFloat(document.getElementById('land-area').value) || 0;
+      const unit = document.getElementById('land-unit').value;
+
+      let areaInHa = 0;
+      if (unit === 'decimal') areaInHa = area / 247.105;
+      else if (unit === 'bigha') areaInHa = (area * 33) / 247.105;
+      else if (unit === 'katha') areaInHa = (area * 1.65) / 247.105;
+      else if (unit === 'acre') areaInHa = (area * 100) / 247.105;
+      else if (unit === 'hectare') areaInHa = area;
+
+      let yieldMultiplier = 1.0;
+      if (yieldGoal === 'high') yieldMultiplier = 1.15;
+      else if (yieldGoal === 'moderate') yieldMultiplier = 0.85;
+
+      let aezFactor = 1.0;
+      if ([25, 26, 27, 28].includes(aez)) aezFactor = 1.08;
+      else if ([13, 14, 15].includes(aez)) aezFactor = 0.95;
+      else if ([21, 22].includes(aez)) aezFactor = 1.05;
+
+      const base = CROP_DATA[cropKey] || CROP_DATA.boro;
+
+      const calcUrea = Math.max(0, base.urea * areaInHa * yieldMultiplier * aezFactor);
+      const calcTsp = Math.max(0, base.tsp * areaInHa * yieldMultiplier * aezFactor);
+      const calcMop = Math.max(0, base.mop * areaInHa * yieldMultiplier * aezFactor);
+      const calcGypsum = Math.max(0, base.gypsum * areaInHa * yieldMultiplier * aezFactor);
+      const calcZinc = Math.max(0, base.zinc * areaInHa * yieldMultiplier * aezFactor);
+      const calcBoron = Math.max(0, base.boron * areaInHa * yieldMultiplier * aezFactor);
+
+      const kgSuffix = isEnglish ? ' kg' : ' কেজি';
+
+      document.getElementById('res-urea').innerText = calcUrea.toFixed(1) + kgSuffix;
+      document.getElementById('res-tsp').innerText = calcTsp.toFixed(1) + kgSuffix;
+      document.getElementById('res-mop').innerText = calcMop.toFixed(1) + kgSuffix;
+      document.getElementById('res-gypsum').innerText = calcGypsum.toFixed(1) + kgSuffix;
+      document.getElementById('res-zinc').innerText = calcZinc.toFixed(2) + kgSuffix;
+      document.getElementById('res-boron').innerText = calcBoron.toFixed(2) + kgSuffix;
+
+      const costUrea = calcUrea * PRICES.urea;
+      const costTsp = calcTsp * PRICES.tsp;
+      const costMop = calcMop * PRICES.mop;
+      const costGypsum = calcGypsum * PRICES.gypsum;
+      const costZinc = calcZinc * PRICES.zinc;
+      const costBoron = calcBoron * PRICES.boron;
+
+      const totalCost = costUrea + costTsp + costMop + costGypsum + costZinc + costBoron;
+
+      document.getElementById('cost-urea').innerText = '৳ ' + Math.round(costUrea);
+      document.getElementById('cost-tsp').innerText = '৳ ' + Math.round(costTsp);
+      document.getElementById('cost-mop').innerText = '৳ ' + Math.round(costMop);
+      document.getElementById('cost-gypsum').innerText = '৳ ' + Math.round(costGypsum);
+      document.getElementById('cost-zinc').innerText = '৳ ' + Math.round(costZinc);
+      document.getElementById('cost-boron').innerText = '৳ ' + Math.round(costBoron);
+
+      document.getElementById('res-total-cost').innerText = '৳ ' + Math.round(totalCost).toLocaleString();
+    }
+
+    // Save calculation to offline localStorage
+    function saveCalculationLocally() {
+      const cropSelect = document.getElementById('crop-select');
+      const cropText = cropSelect.options[cropSelect.selectedIndex].text;
+      const aez = document.getElementById('aez-select').value;
+      const area = document.getElementById('land-area').value;
+      const unit = document.getElementById('land-unit').value;
+      const totalCost = document.getElementById('res-total-cost').innerText;
+
+      const calcRecord = {
+        id: Date.now(),
+        crop: cropText,
+        aez: aez,
+        area: `${area} ${unit}`,
+        cost: totalCost,
+        date: new Date().toLocaleDateString(isEnglish ? 'en-US' : 'bn-BD')
+      };
+
+      const existing = JSON.parse(localStorage.getItem('frg_saved_calcs') || '[]');
+      existing.unshift(calcRecord);
+      if (existing.length > 15) existing.pop();
+      localStorage.setItem('frg_saved_calcs', JSON.stringify(existing));
+
+      renderSavedList();
+      alert(isEnglish ? 'Calculation saved to offline cache!' : 'হিসাবটি সফলভাবে অফলাইন ক্যাশে সংরক্ষিত হয়েছে!');
+    }
+
+    // Download text calculation report with DAE consultation disclaimer
+    function downloadCalculationTxt() {
+      const cropSelect = document.getElementById('crop-select');
+      const cropText = cropSelect.options[cropSelect.selectedIndex].text;
+      const aez = document.getElementById('aez-select').value;
+      const area = document.getElementById('land-area').value;
+      const unit = document.getElementById('land-unit').value;
+      
+      const report = 
+`=============================================================
+ বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) সার সুপারিশমালা হাতবই ২০২৪
+ FRG 2024 Fertilizer Calculation Report (Offline PWA)
+=============================================================
+তারিখ: ${new Date().toLocaleString()}
+ফসল: ${cropText}
+কৃষি পরিবেশ অঞ্চল (AEZ): ${aez}
+জমির পরিমাণ: ${area} ${unit}
+
+প্রয়োজনীয় সার ও সরকারি ভর্তুকিমূল্য খরচ:
+- ইউরিয়া (Urea): ${document.getElementById('res-urea').innerText} (${document.getElementById('cost-urea').innerText})
+- টিএসপি / ডিএপি (TSP/DAP): ${document.getElementById('res-tsp').innerText} (${document.getElementById('cost-tsp').innerText})
+- এমওপি / পটাশ (MoP): ${document.getElementById('res-mop').innerText} (${document.getElementById('cost-mop').innerText})
+- জিপসাম (Gypsum): ${document.getElementById('res-gypsum').innerText} (${document.getElementById('cost-gypsum').innerText})
+- জিংক সালফেট (Zinc): ${document.getElementById('res-zinc').innerText} (${document.getElementById('cost-zinc').innerText})
+- বোরন (Boron): ${document.getElementById('res-boron').innerText} (${document.getElementById('cost-boron').innerText})
+
+মোট আনুমানিক সার খরচ: ${document.getElementById('res-total-cost').innerText}
+
+-------------------------------------------------------------
+⚠️ কৃষি সম্প্রসারণ অধিদপ্তর (DAE) বিধিবদ্ধ সতর্কবার্তা:
+জমিতে রাসায়নিক বা জৈব সার প্রয়োগের পূর্বে আপনার ব্লকের উপসহকারী
+কৃষি কর্মকর্তা (SAAO) বা উপজেলা কৃষি অফিসের সাথে সরাসরি পরামর্শ করা
+এবং মৃত্তিকা সম্পদ উন্নয়ন ইনস্টিটিউট (SRDI) এর মাধ্যমে মাটি পরীক্ষা
+করে নেওয়া বাধ্যতামূলক।
+=============================================================`;
+
+      const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `FRG_2024_Fertilizer_Report_${Date.now()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function renderSavedList() {
+      const existing = JSON.parse(localStorage.getItem('frg_saved_calcs') || '[]');
+      const container = document.getElementById('saved-list');
+      if (existing.length === 0) {
+        container.innerHTML = `<p style="font-size: 0.75rem; color: #888;" id="no-cache-msg">${isEnglish ? 'No calculations saved yet.' : 'কোনো হিসাব এখনও সংরক্ষিত হয়নি।'}</p>`;
+        return;
+      }
+
+      container.innerHTML = existing.map(item => `
+        <div class="cache-item">
+          <div>
+            <strong>${item.crop}</strong><br>
+            <span style="color: #666;">AEZ ${item.aez} • ${item.area} • ${item.date}</span>
+          </div>
+          <div style="font-weight: bold; color: #1B5E20;">${item.cost}</div>
+        </div>
+      `).join('');
+    }
+
+    // Initial run
+    calculateFertilizer();
+    renderSavedList();
+  </script>
+</body>
+</html>

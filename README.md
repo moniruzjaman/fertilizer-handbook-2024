@@ -2,6 +2,7 @@
 
 [![CI — build & validate](https://github.com/moniruzjaman/fertilizer-handbook-2024/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/moniruzjaman/fertilizer-handbook-2024/actions/workflows/ci.yml)
 [![Deploy PWA to gh-pages branch](https://github.com/moniruzjaman/fertilizer-handbook-2024/actions/workflows/gh-pages-branch-deploy.yml/badge.svg?branch=main)](https://github.com/moniruzjaman/fertilizer-handbook-2024/actions/workflows/gh-pages-branch-deploy.yml)
+[![GitHub Pages deployment](https://github.com/moniruzjaman/fertilizer-handbook-2024/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://moniruzjaman.github.io/fertilizer-handbook-2024/)
 
 An offline-first Progressive Web App companion for the **BARC Fertilizer Recommendation Guide 2024 (FRG-2024)** for Bangladesh crops. It calculates exact Urea, TSP/DAP, MoP, Gypsum, Zinc and Boron requirements by land size and soil fertility class, includes respiratory & air-quality safety guidance, and ships a Bengali (`bn`) UI.
 

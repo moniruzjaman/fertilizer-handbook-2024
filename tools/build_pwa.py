@@ -3,9 +3,10 @@
 bump sw.js cache version, update manifest description."""
 import json, re, os
 
-REPO = '/home/z/my-project/fertilizer-handbook-2024'
-TPL = '/home/z/my-project/scripts/pwa_template.html'
-DATA = '/home/z/my-project/scripts/frg_app_data.json'
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(HERE)                      # repo root (portable; was a hard-coded /home/z path)
+TPL = os.path.join(HERE, 'pwa_template.html')
+DATA = os.path.join(HERE, 'frg_app_data.json')
 
 html = open(TPL, encoding='utf-8').read()
 data = open(DATA, encoding='utf-8').read()
@@ -23,12 +24,12 @@ print('pwa/index.html written:', os.path.getsize(os.path.join(REPO, 'pwa/index.h
 # bump service worker cache
 sw_path = os.path.join(REPO, 'pwa/sw.js')
 sw = open(sw_path, encoding='utf-8').read()
-sw2 = re.sub(r"const CACHE_NAME = '[^']+';", "const CACHE_NAME = 'frg-2024-pwa-v4';", sw)
-if sw2 == sw and "CACHE_NAME = 'frg-2024-pwa-v4'" in sw:
-    print('sw.js already at frg-2024-pwa-v4')
+sw2 = re.sub(r"const CACHE_NAME = '[^']+';", "const CACHE_NAME = 'frg-2024-pwa-v5';", sw)
+if sw2 == sw and "CACHE_NAME = 'frg-2024-pwa-v5'" in sw:
+    print('sw.js already at frg-2024-pwa-v5')
 open(sw_path, 'w', encoding='utf-8').write(sw2)
 open(sw_path, 'w', encoding='utf-8').write(sw2)
-print('sw.js cache bumped to frg-2024-pwa-v4')
+print('sw.js cache bumped to frg-2024-pwa-v5')
 
 # manifest description
 mf_path = os.path.join(REPO, 'pwa/manifest.webmanifest')

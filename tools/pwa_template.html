@@ -90,6 +90,44 @@
     .info-tbl th { background: #DCEDC8; color: #33691E; }
     ul.guide-list { font-size: 0.8rem; color: var(--text-main); line-height: 1.7; padding-left: 18px; }
     .src-line { font-size: 0.68rem; color: var(--text-muted); margin-top: 8px; }
+
+    /* ===== Visual Handbook (slide deck) ===== */
+    .vh-intro { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+    .vh-cover { display: block; width: 100%; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; background: #1B5E20; cursor: pointer; }
+    .vh-cover img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+    .vh-cover-badge { position: absolute; right: 8px; bottom: 8px; background: rgba(0,0,0,.65); color: #fff; font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 14px; }
+    .vh-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .vh-actions .btn { flex: 1; margin-top: 0; font-size: .82rem; padding: 10px; }
+    .vh-progress { display: none; margin-top: 8px; font-size: .72rem; color: var(--text-muted); }
+    .vh-progress .bar { height: 6px; border-radius: 3px; background: #E0E8E1; overflow: hidden; margin-top: 4px; }
+    .vh-progress .bar > i { display: block; height: 100%; width: 0; background: var(--primary-light); transition: width .2s; }
+    .vh-sec { margin-top: 14px; }
+    .vh-sec h3 { font-size: .8rem; color: var(--primary); margin-bottom: 6px; }
+    .vh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .vh-thumb { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; padding: 0; cursor: pointer; text-align: left; }
+    .vh-thumb img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #E8F5E9; }
+    .vh-thumb span { display: block; font-size: .62rem; line-height: 1.25; padding: 3px 5px 4px; color: var(--text-main); }
+    .vh-dl { margin-top: 12px; }
+
+    #vh-viewer { position: fixed; inset: 0; z-index: 1000; background: #0b0f0c; display: none; flex-direction: column; color: #fff; touch-action: pan-y; }
+    #vh-viewer.open { display: flex; }
+    .vh-bar { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: rgba(0,0,0,.55); font-size: .78rem; }
+    .vh-bar .vh-ttl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .vh-bar button, .vh-bar select { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; padding: 6px 10px; font-size: .8rem; }
+    .vh-bar select { max-width: 42vw; }
+    .vh-bar select option { color: #000; }
+    .vh-stage { flex: 1; min-height: 0; position: relative; display: flex; align-items: center; justify-content: center; overflow: auto; }
+    .vh-stage img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+    .vh-stage.zoom { align-items: flex-start; justify-content: flex-start; }
+    .vh-stage.zoom img { max-width: none; max-height: none; width: 230%; }
+    .vh-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,.45); color: #fff; border: 0; width: 38px; height: 56px; font-size: 1.5rem; border-radius: 8px; }
+    .vh-nav.prev { left: 6px; } .vh-nav.next { right: 6px; }
+    .vh-stage.zoom .vh-nav { display: none; }
+    .vh-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; background: rgba(0,0,0,.55); font-size: .74rem; }
+    .vh-foot button { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; padding: 7px 12px; font-size: .8rem; }
+    @media (max-width: 560px) { .vh-bar .vh-ttl { display: none; } .vh-bar select { max-width: none; flex: 1; } }
+    .vh-hint { font-size: .72rem; color: #8D6E63; margin: 6px 0 0; }
+    .vh-err { position: absolute; padding: 20px; text-align: center; font-size: .85rem; display: none; }
   </style>
 </head>
 <body>
@@ -107,6 +145,7 @@
     </div>
     <div class="tabs">
       <button class="tab-btn active" id="tab-btn-book" onclick="showTab('book')">📖 হাতবই</button>
+      <button class="tab-btn" id="tab-btn-slides" onclick="showTab('slides')">🖼️ স্লাইড</button>
       <button class="tab-btn" id="tab-btn-calc" onclick="showTab('calc')">🧮 ক্যালকুলেটর</button>
       <button class="tab-btn" id="tab-btn-info" onclick="showTab('info')">ℹ️ তথ্য ও সতর্কতা</button>
     </div>
@@ -178,6 +217,28 @@
     </div>
 
     <!-- ================= TAB: CALCULATOR ================= -->
+    <!-- ================= TAB: VISUAL HANDBOOK (slides) ================= -->
+    <div class="tab-page" id="page-slides">
+    <div class="card" id="vh-card">
+      <h2 id="vh-title">📖 ছবিতে সার সুপারিশমালা (Visual Handbook)</h2>
+      <p class="vh-intro" id="vh-intro">মাটির স্বাস্থ্য, সার পরিচিতি, লক্ষণ দেখে অভাব শনাক্তকরণ, প্রয়োগ পদ্ধতি ও ভেজাল সার চেনার সচিত্র স্লাইড গাইড।</p>
+      <p class="vh-hint" id="vh-hint">💡 ফোন আড়াআড়ি ধরলে স্লাইড বড় দেখায়; জুম করতে 🔍 চাপুন বা ডাবল-ট্যাপ করুন।</p>
+      <button class="vh-cover" onclick="openHandbook(0)" aria-label="Open visual handbook">
+        <img src="slides/t/01.webp" alt="সার সুপারিশমালা হাতবই-২০২৪" loading="lazy">
+        <span class="vh-cover-badge" id="vh-badge">▶ ৪২টি স্লাইড</span>
+      </button>
+      <div class="vh-actions">
+        <button class="btn" id="vh-start" onclick="openHandbook(0)">▶ শুরু করুন</button>
+        <button class="btn btn-secondary" id="vh-offline" onclick="cacheHandbookOffline()">⬇ অফলাইনে সংরক্ষণ</button>
+      </div>
+      <div class="vh-progress" id="vh-progress"><span id="vh-progress-text"></span><div class="bar"><i id="vh-progress-bar"></i></div></div>
+      <div id="vh-sections"></div>
+      <a class="ext-link vh-dl" id="vh-pdf" href="slides/FRG-2024-Visual-Handbook.pdf" download>
+        <span id="vh-pdf-text">📄 পিডিএফ ডাউনলোড (৪.২ এমবি)</span><span>↓</span>
+      </a>
+    </div>
+    </div>
+
     <div class="tab-page" id="page-calc">
 
       <div class="card">
@@ -325,6 +386,27 @@
 
     </div>
   </div>
+
+    <div id="vh-viewer" role="dialog" aria-modal="true" aria-label="Visual Handbook">
+      <div class="vh-bar">
+        <button onclick="closeHandbook()" aria-label="Close">✕</button>
+        <span class="vh-ttl" id="vh-cur-title"></span>
+        <select id="vh-jump" onchange="goHandbook(+this.value)" aria-label="Jump to slide"></select>
+        <button onclick="toggleHandbookZoom()" id="vh-zoom-btn" aria-label="Zoom">🔍</button>
+      </div>
+      <div class="vh-stage" id="vh-stage">
+        <img id="vh-img" alt="" draggable="false">
+        <div class="vh-err" id="vh-err"></div>
+        <button class="vh-nav prev" onclick="stepHandbook(-1)" aria-label="Previous">‹</button>
+        <button class="vh-nav next" onclick="stepHandbook(1)" aria-label="Next">›</button>
+      </div>
+      <div class="vh-foot">
+        <button onclick="stepHandbook(-1)" id="vh-prev">‹ আগের</button>
+        <span id="vh-counter"></span>
+        <button onclick="stepHandbook(1)" id="vh-next">পরের ›</button>
+      </div>
+    </div>
+
 
   <script>
     // ============ Data ============
@@ -678,6 +760,7 @@
       t('tab-btn-book', '📖 Handbook', '📖 হাতবই');
       t('tab-btn-calc', '🧮 Calculator', '🧮 ক্যালকুলেটর');
       t('tab-btn-info', 'ℹ️ Info & Safety', 'ℹ️ তথ্য ও সতর্কতা');
+      t('tab-btn-slides', '🖼️ Slides', '🖼️ স্লাইড');
       t('dae-title', '⚠️ Department of Agricultural Extension (DAE) Mandatory Advisory', '⚠️ কৃষি সম্প্রসারণ অধিদপ্তর (DAE) বিধিবদ্ধ সতর্কবার্তা');
       t('dae-text', 'You must directly consult your local Sub-Assistant Agriculture Officer (SAAO) or Upazila Agriculture Office (DAE) and test your soil via SRDI before applying any fertilizers.', document.getElementById('dae-text').getAttribute('data-bn') || document.getElementById('dae-text').innerText);
       t('pwa-offline-mode', 'Offline PWA Cache Active (100% Offline Usable)', 'অফলাইন পিডব্লিউএ ক্যাশ সক্রিয় (১০০% অফলাইনে চলবে)');
@@ -702,9 +785,190 @@
       t('links-title', '🔗 National Agricultural Portals & Resources', '🔗 জাতীয় কৃষি পোর্টাল ও রিসোর্স');
       t('gps-status-text', '📍 Auto-detect AEZ with live GPS', '📍 লাইভ জিপিএস দিয়ে AEZ স্বয়ংক্রিয় সনাক্ত করুন');
       t('btn-detect-gps', 'Detect Location', 'জিপিএস চালু করুন');
+      applyHandbookLang();
       calculateFertilizer();
       renderSavedList();
     }
+
+
+    // ===== Visual Handbook (illustrated slide deck) =====
+    // [section index, Bengali title, English title]; slide image = slides/NN.webp (NN = position, 1-based)
+    const HB_SECTIONS = [
+      ['১. প্রেক্ষাপট ও লক্ষ্য', '1. Context & goal'],
+      ['২. পুষ্টি উপাদান ও সার পরিচিতি', '2. Nutrients & fertilizers'],
+      ['৩. লক্ষণ দেখে অভাব শনাক্তকরণ', '3. Deficiency symptoms'],
+      ['৪. জৈব সার ও অণুজীব সার', '4. Organic & bio-fertilizer'],
+      ['৫. মাত্রা নির্ধারণ (হাতবই ব্যবহার)', '5. Deciding the dose'],
+      ['৬. প্রয়োগ পদ্ধতি ও কৌশল', '6. Application methods'],
+      ['৭. ভেজাল সার শনাক্তকরণ', '7. Spotting adulterated fertilizer'],
+      ['৮. সারসংক্ষেপ', '8. Summary']
+    ];
+    const HB_SLIDES = [
+      [0,'সার সুপারিশমালা হাতবই-২০২৪','FRG-2024 handbook'],
+      [0,'প্রেক্ষাপট: কমছে জমি, বাড়ছে খাদ্য চাহিদা','Context: shrinking land, rising demand'],
+      [0,'মাটির স্বাস্থ্য কেন হুমকির মুখে?','Why soil health is under threat'],
+      [0,'মাটির স্বাস্থ্য ও কৃষকের সম্পদ','Soil health is the farmer’s wealth'],
+      [0,'লক্ষ্য: সুষম পুষ্টি','Goal: balanced nutrition'],
+      [1,'উদ্ভিদের ১৭টি অত্যাবশ্যকীয় পুষ্টি উপাদান','The 17 essential plant nutrients'],
+      [1,'উদ্ভিদের প্রধান খাবার (N-P-K)','Primary plant foods (N-P-K)'],
+      [1,'সারের পরিচিতি ও পুষ্টিমান','Fertilizer nutrient content'],
+      [2,'লক্ষণ দেখে অভাব শনাক্তকরণ','Reading deficiency symptoms'],
+      [2,'অভাব লক্ষণ (১): N, P, K','Deficiency signs (1): N, P, K'],
+      [2,'অভাব লক্ষণ (২): S, Zn, B','Deficiency signs (2): S, Zn, B'],
+      [3,'জৈবপদার্থ: মাটির জীবনী শক্তি','Organic matter: the soil’s life force'],
+      [3,'জৈব পদার্থ ব্যবস্থাপনা','Managing organic matter'],
+      [3,'জৈব সারের শক্তি','The power of organic manure'],
+      [3,'জৈবসার তৈরির ব্যবহারিক কৌশল','Making organic manure in practice'],
+      [3,'জৈব সার প্রয়োগের টাইমলাইন','Organic manure timeline'],
+      [3,'সবুজ সার ও ইউরিয়া সাশ্রয়','Green manure & urea saving'],
+      [3,'অণুজীব সার: নাইট্রোজেন সংযোজন','Bio-fertilizer: fixing nitrogen'],
+      [3,'অণুজীব সার: বীজ শোধন রেসিপি','Bio-fertilizer: seed treatment recipe'],
+      [4,'ভারসাম্যহীন ব্যবহারের ঝুঁকি','Risks of imbalanced use'],
+      [4,'সুষম সার প্রয়োগের ১০টি বিবেচ্য বিষয়','10 things to check before recommending'],
+      [4,'হাতবই ব্যবহারের নিয়ম','How to use the handbook'],
+      [4,'মাঠের হিসাব: বোরো ধান','Field math: Boro rice'],
+      [4,'মাঠের হিসাব: ভুট্টা','Field math: maize'],
+      [4,'ফলের যত্ন: আম ও কাঁঠাল','Fruit trees: mango & jackfruit'],
+      [5,'অন্যান্য সার প্রয়োগের সাধারণ নিয়ম','General rules for other fertilizers'],
+      [5,'ব্যাসাল ডোজ: জমি তৈরির শেষ ধাপ','Basal dose at final land preparation'],
+      [5,'ইউরিয়া প্রয়োগের তিন কিস্তি','Urea in three splits'],
+      [5,'ইউরিয়ার অপচয় রোধ ও গুটি ইউরিয়া','Cutting urea loss; guti urea'],
+      [5,'সবজি, আলু ও অণুজীব সার কৌশল','Vegetables, potato & bio-fertilizer tips'],
+      [5,'শস্যভিত্তিক: ধান, গম, ভুট্টা','By crop: rice, wheat, maize'],
+      [5,'শস্যভিত্তিক: সবজি ও ফল','By crop: vegetables & fruit'],
+      [5,'বিশেষ পরিস্থিতিতে প্রয়োগ','Special situations'],
+      [5,'গৌণ পুষ্টি ও জরুরি স্প্রে','Micronutrients & rescue spray'],
+      [5,'অম্লীয় মাটি ও চুন প্রয়োগ','Acid soil & liming'],
+      [5,'নিরাপত্তা ও সামঞ্জস্য বিধান','Safety & compatibility checklist'],
+      [6,'ভেজাল সার চেনার দ্রুত পরীক্ষা','Quick adulteration tests'],
+      [6,'ভেজাল (১): ইউরিয়া ও টিএসপি','Adulteration (1): urea & TSP'],
+      [6,'ভেজাল (২): ডিএপি ও এমওপি','Adulteration (2): DAP & MoP'],
+      [6,'ভেজাল (৩): জিংক ও বোরন','Adulteration (3): zinc & boron'],
+      [7,'সার ব্যবহারের সোনালী নিয়ম','The golden rules of fertilizer use'],
+      [7,'উপসংহার','Conclusion']
+    ];
+    const HB_N = HB_SLIDES.length;
+    let hbIndex = 0, hbOpen = false, hbZoom = false;
+    const hbPad = n => String(n + 1).padStart(2, '0');
+    const hbNum = n => isEnglish ? String(n) : String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+    const hbTitle = i => HB_SLIDES[i][isEnglish ? 2 : 1];
+    const hbSrc = i => `slides/${hbPad(i)}.webp`;
+
+    function renderHandbookIndex() {
+      const box = document.getElementById('vh-sections');
+      if (!box) return;
+      box.innerHTML = HB_SECTIONS.map((s, si) => {
+        const items = HB_SLIDES.map((sl, i) => ({ sl, i })).filter(x => x.sl[0] === si);
+        return `<div class="vh-sec"><h3>${s[isEnglish ? 1 : 0]}</h3><div class="vh-grid">` +
+          items.map(x => `<button class="vh-thumb" onclick="openHandbook(${x.i})"><img src="slides/t/${hbPad(x.i)}.webp" alt="" loading="lazy"><span>${hbNum(x.i + 1)}. ${hbTitle(x.i)}</span></button>`).join('') +
+          `</div></div>`;
+      }).join('');
+      const jump = document.getElementById('vh-jump');
+      jump.innerHTML = HB_SECTIONS.map((s, si) => `<optgroup label="${s[isEnglish ? 1 : 0]}">` +
+        HB_SLIDES.map((sl, i) => sl[0] === si ? `<option value="${i}">${hbNum(i + 1)}. ${hbTitle(i)}</option>` : '').join('') + `</optgroup>`).join('');
+      jump.value = hbIndex;
+    }
+
+    function showHandbookSlide() {
+      const img = document.getElementById('vh-img'), err = document.getElementById('vh-err');
+      err.style.display = 'none'; img.style.display = '';
+      img.onerror = () => { img.style.display = 'none'; err.style.display = 'block';
+        err.innerText = isEnglish ? 'Slide not available offline yet. Connect to the internet or tap “Save offline”.' : 'স্লাইডটি এখনও অফলাইনে নেই। ইন্টারনেট চালু করুন বা “অফলাইনে সংরক্ষণ” চাপুন।'; };
+      img.src = hbSrc(hbIndex);
+      img.alt = hbTitle(hbIndex);
+      document.getElementById('vh-cur-title').innerText = hbTitle(hbIndex);
+      document.getElementById('vh-counter').innerText = `${hbNum(hbIndex + 1)} / ${hbNum(HB_N)}`;
+      document.getElementById('vh-jump').value = hbIndex;
+      document.getElementById('vh-prev').disabled = hbIndex === 0;
+      document.getElementById('vh-next').disabled = hbIndex === HB_N - 1;
+      document.getElementById('vh-stage').scrollTo(0, 0);
+      [hbIndex + 1, hbIndex - 1].forEach(j => { if (j >= 0 && j < HB_N) new Image().src = hbSrc(j); });   // preload neighbours
+    }
+
+    function openHandbook(i) {
+      hbIndex = Math.min(Math.max(i || 0, 0), HB_N - 1);
+      document.getElementById('vh-viewer').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (!hbOpen) { history.pushState({ hb: true }, '', '#slide-' + (hbIndex + 1)); }
+      else { history.replaceState({ hb: true }, '', '#slide-' + (hbIndex + 1)); }
+      hbOpen = true; showHandbookSlide();
+    }
+    function closeHandbook(fromPop) {
+      if (!hbOpen) return;
+      hbOpen = false; hbZoom = false;
+      document.getElementById('vh-stage').classList.remove('zoom');
+      document.getElementById('vh-viewer').classList.remove('open');
+      document.body.style.overflow = '';
+      if (!fromPop && history.state && history.state.hb) history.back();
+    }
+    function goHandbook(i) {
+      hbIndex = Math.min(Math.max(i, 0), HB_N - 1);
+      history.replaceState({ hb: true }, '', '#slide-' + (hbIndex + 1));
+      showHandbookSlide();
+    }
+    function stepHandbook(d) { if (hbZoom) toggleHandbookZoom(); goHandbook(hbIndex + d); }
+    function toggleHandbookZoom() {
+      hbZoom = !hbZoom;
+      document.getElementById('vh-stage').classList.toggle('zoom', hbZoom);
+    }
+
+    // Offline: fetch every slide once so the service worker stores it (works through the SW's cache-on-fetch)
+    async function cacheHandbookOffline() {
+      const wrap = document.getElementById('vh-progress'), txt = document.getElementById('vh-progress-text'), bar = document.getElementById('vh-progress-bar');
+      const btn = document.getElementById('vh-offline'); btn.disabled = true; wrap.style.display = 'block';
+      let done = 0, failed = 0;
+      for (let i = 0; i < HB_N; i++) {
+        try { const r = await fetch(hbSrc(i)); if (!r.ok) failed++; else await r.blob(); } catch (e) { failed++; }
+        done++; bar.style.width = (done / HB_N * 100) + '%';
+        txt.innerText = (isEnglish ? 'Saving slides… ' : 'স্লাইড সংরক্ষণ হচ্ছে… ') + hbNum(done) + '/' + hbNum(HB_N);
+      }
+      txt.innerText = failed
+        ? (isEnglish ? `Saved ${HB_N - failed} of ${HB_N}. Retry when online.` : `${hbNum(HB_N - failed)}/${hbNum(HB_N)}টি সংরক্ষিত। ইন্টারনেট চালু করে আবার চেষ্টা করুন।`)
+        : (isEnglish ? '✓ All slides saved for offline use.' : '✓ সব স্লাইড অফলাইনে সংরক্ষিত হয়েছে।');
+      btn.disabled = false;
+    }
+
+    function applyHandbookLang() {
+      const t = (id, bn, en) => { const el = document.getElementById(id); if (el) el.innerText = isEnglish ? en : bn; };
+      t('vh-title', '📖 ছবিতে সার সুপারিশমালা (Visual Handbook)', '📖 Visual Handbook (illustrated slides)');
+      t('vh-intro', 'মাটির স্বাস্থ্য, সার পরিচিতি, লক্ষণ দেখে অভাব শনাক্তকরণ, প্রয়োগ পদ্ধতি ও ভেজাল সার চেনার সচিত্র স্লাইড গাইড।',
+        'Illustrated slide guide: soil health, fertilizer basics, deficiency symptoms, application methods and spotting adulterated fertilizer.');
+      t('vh-badge', `▶ ${hbNum(HB_N)}টি স্লাইড`, `▶ ${HB_N} slides`);
+      t('vh-hint', '💡 ফোন আড়াআড়ি ধরলে স্লাইড বড় দেখায়; জুম করতে 🔍 চাপুন বা ডাবল-ট্যাপ করুন।', '💡 Rotate your phone to landscape for a bigger slide; tap 🔍 or double-tap to zoom.');
+      t('vh-start', '▶ শুরু করুন', '▶ Start');
+      t('vh-offline', '⬇ অফলাইনে সংরক্ষণ', '⬇ Save offline');
+      t('vh-pdf-text', '📄 পিডিএফ ডাউনলোড (৪.২ এমবি)', '📄 Download PDF (4.2 MB)');
+      t('vh-prev', '‹ আগের', '‹ Prev'); t('vh-next', 'পরের ›', 'Next ›');
+      renderHandbookIndex();
+      if (hbOpen) showHandbookSlide();
+    }
+
+    // Keyboard, swipe, back button, deep link
+    document.addEventListener('keydown', e => {
+      if (!hbOpen) return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') stepHandbook(1);
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') stepHandbook(-1);
+      else if (e.key === 'Escape') closeHandbook();
+    });
+    (function () {
+      let sx = 0, sy = 0;
+      const st = document.getElementById('vh-stage');
+      st.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+      st.addEventListener('touchend', e => {
+        if (hbZoom) return;
+        const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) stepHandbook(dx < 0 ? 1 : -1);
+      }, { passive: true });
+      st.addEventListener('dblclick', toggleHandbookZoom);
+    })();
+    window.addEventListener('popstate', () => { if (hbOpen) closeHandbook(true); });
+    renderHandbookIndex();
+    const hbHash = /^#slide-(\d+)$/.exec(location.hash);
+    if (hbHash) openHandbook(+hbHash[1] - 1);
+    window.addEventListener('hashchange', () => {
+      const m = /^#slide-(\d+)$/.exec(location.hash);
+      if (m && !(hbOpen && hbIndex === +m[1] - 1)) { if (hbOpen) goHandbook(+m[1] - 1); else openHandbook(+m[1] - 1); }
+    });
 
     // ============ Init ============
     function init() {

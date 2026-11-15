@@ -1,10 +1,12 @@
-const CACHE_NAME = 'frg-2024-pwa-v4';
+const CACHE_NAME = 'frg-2024-pwa-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './slides/t/01.webp',
+  './slides/01.webp'
 ];
 
 // Install: Cache core application shell

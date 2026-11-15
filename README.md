@@ -13,7 +13,12 @@ An offline-first Progressive Web App companion for the **BARC সার সু�
 - **হাতবই ব্রাউজ (Handbook browser)** — every কৃষি পরিবেশ অঞ্চল (AEZ) from the handbook with its area, land classes, fertility levels and districts; the full crop-pattern table (মৌসুম, ফসল, কাঙ্ক্ষিত ফলন ± এবং গ্রাম/শতাংশ-ভিত্তিক মাত্রা) for ইউরিয়া, টিএসপি/ডিএপি, এমওপি, জিপসাম, ম্যাগনেসিয়াম সালফেট, জিংক সালফেট, বোরিক এসিড ও জৈবসার.
 - **জেলা ভিত্তিক AEZ খোঁজ** — type your district and get the AEZs that cover it (from the handbook's own district descriptions).
 - **ক্যালকুলেটর** — any handbook dose row × your land size (শতক/বিঘা/কাঠা/একর/হেক্টর) → fertilizer kg + estimated subsidized cost. One tap moves a table row into the calculator.
+- **স্লাইড (Visual Handbook)** — a 42-slide illustrated guide merged from four BARC-based decks (soil health, nutrients, deficiency symptoms, organic/bio-fertilizer, dose-setting, urea splits & guti urea, crop-wise methods, liming, safety, adulteration tests). Swipe/arrow/keyboard navigation, section jump, zoom, deep links (`#slide-12`), one-tap *Save offline*, and a downloadable PDF. Slides are explanatory summaries — **the AEZ dose tables in the Handbook tab are the authoritative doses.**
 - **তথ্য ও সতর্কতা** — the handbook's fertilizer nutrient-content table (সারণি-১), nutrient-deficiency symptoms, application rules (অধ্যায় ১১ ও ১৪), DAE advisory and air-quality guidance.
+
+### Visual Handbook notes
+
+Slide order, titles (Bengali/English) and section grouping live in `HB_SECTIONS` / `HB_SLIDES` in `tools/pwa_template.html`; slide *N* is `pwa/slides/NN.webp`. To add or reorder slides, drop the image in, edit that list, run `python3 tools/build_pwa.py`, then `npm run build`. `build.mjs` fails the build if any slide, thumbnail or the PDF is missing. Source decks were AI-generated summaries of the handbook; see `docs/ENHANCEMENT_PLAN.md` for the verification plan and known discrepancies between decks.
 
 ### Data provenance
 
@@ -24,6 +29,9 @@ The AEZ dataset was extracted from the official handbook PDF (BARC, ISBN 978-984
 | Path | Purpose |
 | --- | --- |
 | `pwa/` | The static PWA source (`index.html` with embedded handbook dataset, `manifest.webmanifest`, service worker, icons) |
+| `pwa/slides/` | Visual Handbook assets: `NN.webp` (42 slides), `t/NN.webp` (thumbnails), `FRG-2024-Visual-Handbook.pdf` |
+| `tools/build_pwa.py` | Regenerates `pwa/index.html` from `tools/pwa_template.html` + `tools/frg_app_data.json` (repo-relative; run after editing the template) |
+| `tools/smoke_pwa.mjs` | Headless smoke test of the embedded data, calculator and slide index (`node tools/smoke_pwa.mjs`) |
 | `build.mjs` | Build script — copies `pwa/` into `dist/`, validates the output (handbook data + tabs present), writes `.nojekyll` |
 | `firestore.rules` | Security rules for the optional Firestore sync (user profiles + saved calculations) |
 | `firestore.test.js` | Rules unit tests (require the Firestore emulator) |

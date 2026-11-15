@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>FRG 2024: সার সুপারিশমালা হাতবই (BARC)</title>
   <meta name="description" content="বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) সার সুপারিশমালা হাতবই-২০২৪ — AEZ ভিত্তিক ফসলধারাভিত্তিক সারের মাত্রা ব্রাউজার + ক্যালকুলেটর, ১০০% অফলাইন PWA">
+  <link rel="canonical" href="https://moniruzjaman.github.io/fertilizer-handbook-2024/">
+  <meta property="og:site_name" content="সার সুপারিশমালা হাতবই-২০২৪ (FRG-2024 PWA)">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://moniruzjaman.github.io/fertilizer-handbook-2024/">
+  <meta property="og:title" content="সার সুপারিশমালা হাতবই-২০২৪ — AEZ ভিত্তিক সার মাত্রা ও ক্যালকুলেটর (BARC)">
+  <meta property="og:description" content="BARC হাতবই-২০২৪ থেকে বাংলাদেশের ২৯টি কৃষি পরিবেশ অঞ্চলের ফসলধারাভিত্তিক অনুমোদিত সার মাত্রা + জেলাভিত্তিক AEZ খোঁজ + ১০০% অফলাইন সার ক্যালকুলেটর।">
+  <meta property="og:image" content="https://moniruzjaman.github.io/fertilizer-handbook-2024/og/og-1200x630.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="সার সুপারিশমালা হাতবই-২০২৪ (BARC) — অফলাইন সার ক্যালকুলেটর PWA">
+  <meta property="og:locale" content="bn_BD">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="সার সুপারিশমালা হাতবই-২০২৪ — অফলাইন সার ক্যালকুলেটর (BARC)">
+  <meta name="twitter:description" content="২৯ AEZ • ফসলধারাভিত্তিক সার মাত্রা • ক্যালকুলেটর • ১০০% অফলাইন">
+  <meta name="twitter:image" content="https://moniruzjaman.github.io/fertilizer-handbook-2024/og/twitter-1200x675.png">
+  <meta name="twitter:image:alt" content="সার সুপারিশমালা হাতবই-২০২৪ (BARC) — অফলাইন সার ক্যালকুলেটর PWA">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1B5E20">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -244,6 +260,12 @@
         <div id="saved-list">
           <p style="font-size: 0.75rem; color: #888;" id="no-cache-msg">কোনো হিসাব এখনও সংরক্ষিত হয়নি।</p>
         </div>
+        <div class="btn-action-row">
+          <button class="btn btn-secondary btn-half" onclick="exportSavedCalcs()">⬇️ <span id="export-label">ব্যাকআপ এক্সপোর্ট</span></button>
+          <button class="btn btn-secondary btn-half" onclick="document.getElementById('import-file').click()">⬆️ <span id="import-label">ব্যাকআপ ইমপোর্ট</span></button>
+        </div>
+        <input type="file" id="import-file" accept="application/json,.json" style="display:none" onchange="importSavedCalcs(this.files[0]); this.value='';">
+        <p style="font-size: 0.68rem; color: var(--text-muted); margin-top: 8px;" id="cache-note">সব হিসাব আপনার ডিভাইসেই (localStorage) থাকে — কোনো সার্ভারে যায় না। ব্যাকআপ ফাইল দিয়ে ফোন বদলালেও হিসাব স্থানান্তর করা যায়।</p>
       </div>
 
     </div>
@@ -576,7 +598,7 @@
       };
       const existing = JSON.parse(localStorage.getItem('frg_saved_calcs') || '[]');
       existing.unshift(rec);
-      if (existing.length > 15) existing.pop();
+      if (existing.length > 60) existing.pop();
       localStorage.setItem('frg_saved_calcs', JSON.stringify(existing));
       renderSavedList();
       alert(isEnglish ? 'Calculation saved to offline cache!' : 'হিসাবটি সফলভাবে অফলাইন ক্যাশে সংরক্ষিত হয়েছে!');
@@ -641,6 +663,55 @@
         </div>`).join('');
     }
 
+    // ============ Backup export / import (local-first sync) ============
+    function exportSavedCalcs() {
+      const data = JSON.parse(localStorage.getItem('frg_saved_calcs') || '[]');
+      const payload = {
+        app: 'frg-2024-pwa',
+        schema: 1,
+        exportedAt: new Date().toISOString(),
+        calculations: data
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const aEl = document.createElement('a');
+      aEl.href = url;
+      aEl.download = 'frg-2024-saved-calculations.json';
+      document.body.appendChild(aEl);
+      aEl.click();
+      document.body.removeChild(aEl);
+      URL.revokeObjectURL(url);
+    }
+    function importSavedCalcs(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          const items = Array.isArray(parsed) ? parsed : (parsed.calculations || []);
+          if (!Array.isArray(items)) throw new Error('bad format');
+          const clean = items
+            .filter(x => x && (x.crop || x.name) && (x.aez || x.zone))
+            .map(x => ({
+              id: x.id || Date.now() + Math.floor(Math.random() * 999),
+              crop: String(x.crop || x.name),
+              aez: String(x.aez || x.zone),
+              area: String(x.area || ''),
+              cost: String(x.cost || ''),
+              date: String(x.date || new Date().toLocaleDateString('bn-BD'))
+            }));
+          const existing = JSON.parse(localStorage.getItem('frg_saved_calcs') || '[]');
+          const merged = [...clean, ...existing].slice(0, 60);
+          localStorage.setItem('frg_saved_calcs', JSON.stringify(merged));
+          renderSavedList();
+          alert(isEnglish ? ('Imported ' + clean.length + ' calculation(s).') : (clean.length + 'টি হিসাব ইমপোর্ট হয়েছে।'));
+        } catch (e) {
+          alert(isEnglish ? 'Invalid backup file.' : 'ব্যাকআপ ফাইলটি সঠিক নয়।');
+        }
+      };
+      reader.readAsText(file);
+    }
+
     // ============ GPS AEZ matcher (approximate) ============
     function detectLiveAez() {
       const statusSpan = document.getElementById('gps-status-text');
@@ -700,6 +771,9 @@
       t('def-title', '🩺 Nutrient deficiency symptoms (field identification)', '🩺 পুষ্টি উপাদান অভাবজনিত লক্ষণ (মাঠে শনাক্তকরণ)');
       t('guide-title', '📐 Important application rules (Handbook ch. 11 & 14)', '📐 সার প্রয়োগের গুরুত্বপূর্ণ নিয়ম (হাতবই অধ্যায় ১১ ও ১৪)');
       t('links-title', '🔗 National Agricultural Portals & Resources', '🔗 জাতীয় কৃষি পোর্টাল ও রিসোর্স');
+      t('export-label', 'Export backup', 'ব্যাকআপ এক্সপোর্ট');
+      t('import-label', 'Import backup', 'ব্যাকআপ ইমপোর্ট');
+      t('cache-note', 'All calculations stay on your device (localStorage) — nothing is sent to any server. Use the backup file to move them between phones.', 'সব হিসাব আপনার ডিভাইসেই (localStorage) থাকে — কোনো সার্ভারে যায় না। ব্যাকআপ ফাইল দিয়ে ফোন বদলালেও হিসাব স্থানান্তর করা যায়।');
       t('gps-status-text', '📍 Auto-detect AEZ with live GPS', '📍 লাইভ জিপিএস দিয়ে AEZ স্বয়ংক্রিয় সনাক্ত করুন');
       t('btn-detect-gps', 'Detect Location', 'জিপিএস চালু করুন');
       calculateFertilizer();

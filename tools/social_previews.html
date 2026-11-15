@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: 'NSB'; src: url('/fonts/NotoSansBengali-Regular.ttf'); font-weight: 400; }
+  @font-face { font-family: 'NSB'; src: url('/fonts/NotoSansBengali-Bold.ttf'); font-weight: 700; }
+  @font-face { font-family: 'NSB'; src: url('/fonts/NotoSansBengali-Black.ttf'); font-weight: 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #222; font-family: 'NSB', sans-serif; }
+  .wrap { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+  .label { color: #9CDCA8; font-size: 14px; padding-left: 2px; }
+
+  .canvas { position: relative; overflow: hidden;
+    background: linear-gradient(158deg, #0C3A20 0%, #144D2A 42%, #108449 100%);
+    color: #fff; }
+  .wave { position: absolute; left: -5%; right: -5%; pointer-events: none; }
+  .band { position: absolute; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, #F7F2D2 0%, #EAE4BA 100%);
+    display: flex; align-items: center; justify-content: space-between; }
+  .band .bn { color: #144D2A; font-weight: 700; }
+  .band .url { color: #0C3A20; font-weight: 700; }
+  .title { font-weight: 900; color: #FFFFFF; line-height: 1.18; }
+  .title .yr { color: #E9DF9E; }
+  .sub { color: #DFF2C8; font-weight: 400; }
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip { border: 1.5px solid rgba(233,223,158,0.75); background: rgba(255,255,255,0.10);
+    color: #F3EFC7; border-radius: 999px; font-weight: 700; white-space: nowrap; }
+  .badge { position: absolute; border-radius: 24px; background: #FFFFFF;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.35); }
+  .badge img { display: block; }
+  .grain { position: absolute; border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+    background: rgba(233,223,158,0.28); }
+  .offline { display: inline-flex; align-items: center; gap: 8px;
+    background: #E9DF9E; color: #0C3A20; font-weight: 900; border-radius: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ OG / Facebook / LinkedIn / Telegram ============ -->
+  <div class="label">og-1200x630</div>
+  <div class="canvas" data-name="og" style="width:1200px;height:630px;">
+    <svg class="wave" style="top:462px;" width="1300" height="150" viewBox="0 0 1300 150">
+      <path d="M0,90 C260,10 480,140 700,70 C930,-5 1120,110 1300,55 L1300,150 L0,150 Z" fill="#EAE4BA" opacity="0.92"/>
+      <path d="M0,90 C260,10 480,140 700,70 C930,-5 1120,110 1300,55" stroke="#F7F2D2" stroke-width="7" fill="none"/>
+    </svg>
+    <div style="position:absolute;left:56px;top:58px;max-width:640px;">
+      <div class="title" style="font-size:74px;">সার সুপারিশমালা<br>হাতবই-<span class="yr">২০২৪</span></div>
+      <div class="sub" style="font-size:25px;margin-top:14px;">Fertilizer Recommendation Handbook 2024 • BARC</div>
+    </div>
+    <div style="position:absolute;left:56px;top:402px;display:flex;gap:12px;">
+      <span class="chip" style="font-size:21px;padding:9px 20px;">২৯ কৃষি পরিবেশ অঞ্চল</span>
+      <span class="chip" style="font-size:21px;padding:9px 20px;">ফসলধারাভিত্তিক সার মাত্রা</span>
+      <span class="chip" style="font-size:21px;padding:9px 20px;">সার ক্যালকুলেটর</span>
+    </div>
+    <div class="offline" style="position:absolute;right:56px;top:408px;font-size:24px;padding:12px 26px;">📴 ১০০% অফলাইন</div>
+    <div class="badge" style="right:56px;top:66px;width:150px;height:150px;">
+      <img src="/icon-512.png" width="118" height="118" alt="">
+    </div>
+    <div class="band" style="height:96px;padding:0 56px;">
+      <div class="bn" style="font-size:27px;">বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)</div>
+      <div class="url" style="font-size:22px;">moniruzjaman.github.io/fertilizer-handbook-2024</div>
+    </div>
+  </div>
+
+  <!-- ============ Twitter / X ============ -->
+  <div class="label">twitter-1200x675</div>
+  <div class="canvas" data-name="twitter" style="width:1200px;height:675px;">
+    <svg class="wave" style="top:514px;" width="1300" height="160" viewBox="0 0 1300 160">
+      <path d="M0,95 C260,15 480,150 700,75 C930,0 1120,120 1300,60 L1300,160 L0,160 Z" fill="#EAE4BA" opacity="0.92"/>
+      <path d="M0,95 C260,15 480,150 700,75 C930,0 1120,120 1300,60" stroke="#F7F2D2" stroke-width="7" fill="none"/>
+    </svg>
+    <div style="position:absolute;left:56px;top:64px;max-width:660px;">
+      <div class="title" style="font-size:78px;">সার সুপারিশমালা<br>হাতবই-<span class="yr">২০২৪</span></div>
+      <div class="sub" style="font-size:26px;margin-top:14px;">Fertilizer Recommendation Handbook 2024 • BARC</div>
+    </div>
+    <div style="position:absolute;left:56px;top:458px;display:flex;gap:12px;">
+      <span class="chip" style="font-size:21px;padding:9px 20px;">২৯ কৃষি পরিবেশ অঞ্চল</span>
+      <span class="chip" style="font-size:21px;padding:9px 20px;">ফসলধারাভিত্তিক মাত্রা</span>
+      <span class="chip" style="font-size:21px;padding:9px 20px;">ক্যালকুলেটর</span>
+    </div>
+    <div class="offline" style="position:absolute;right:56px;top:462px;font-size:24px;padding:12px 26px;">📴 ১০০% অফলাইন</div>
+    <div class="badge" style="right:56px;top:70px;width:156px;height:156px;">
+      <img src="/icon-512.png" width="122" height="122" alt="">
+    </div>
+    <div class="band" style="height:100px;padding:0 56px;">
+      <div class="bn" style="font-size:28px;">বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)</div>
+      <div class="url" style="font-size:22px;">moniruzjaman.github.io/fertilizer-handbook-2024</div>
+    </div>
+  </div>
+
+  <!-- ============ YouTube thumbnail ============ -->
+  <div class="label">youtube-1280x720</div>
+  <div class="canvas" data-name="youtube" style="width:1280px;height:720px;">
+    <svg class="wave" style="top:548px;" width="1380" height="170" viewBox="0 0 1380 170">
+      <path d="M0,100 C280,15 520,160 760,80 C1000,0 1200,130 1380,65 L1380,170 L0,170 Z" fill="#EAE4BA" opacity="0.92"/>
+      <path d="M0,100 C280,15 520,160 760,80 C1000,0 1200,130 1380,65" stroke="#F7F2D2" stroke-width="7" fill="none"/>
+    </svg>
+    <div style="position:absolute;left:60px;top:70px;max-width:700px;">
+      <div class="title" style="font-size:86px;">সার সুপারিশমালা<br>হাতবই-<span class="yr">২০২৪</span></div>
+      <div class="sub" style="font-size:27px;margin-top:16px;">Fertilizer Recommendation Handbook 2024 • BARC</div>
+    </div>
+    <div style="position:absolute;left:60px;top:492px;display:flex;gap:14px;">
+      <span class="chip" style="font-size:23px;padding:10px 22px;">২৯ কৃষি পরিবেশ অঞ্চল</span>
+      <span class="chip" style="font-size:23px;padding:10px 22px;">সার ক্যালকুলেটর</span>
+      <span class="chip" style="font-size:23px;padding:10px 22px;">সম্পূর্ণ বাংলা</span>
+    </div>
+    <div class="badge" style="right:64px;top:84px;width:180px;height:180px;">
+      <img src="/icon-512.png" width="142" height="142" alt="">
+    </div>
+    <div class="offline" style="position:absolute;right:64px;top:300px;font-size:25px;padding:12px 28px;">📴 ১০০% অফলাইন</div>
+    <div class="band" style="height:108px;padding:0 60px;">
+      <div class="bn" style="font-size:29px;">বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)</div>
+      <div class="url" style="font-size:23px;">moniruzjaman.github.io/fertilizer-handbook-2024</div>
+    </div>
+  </div>
+
+  <!-- ============ Instagram square ============ -->
+  <div class="label">instagram-1080x1080</div>
+  <div class="canvas" data-name="instagram" style="width:1080px;height:1080px;">
+    <svg class="wave" style="top:778px;" width="1180" height="180" viewBox="0 0 1180 180">
+      <path d="M0,105 C240,20 440,175 640,95 C860,5 1000,135 1180,70 L1180,180 L0,180 Z" fill="#EAE4BA" opacity="0.92"/>
+      <path d="M0,105 C240,20 440,175 640,95 C860,5 1000,135 1180,70" stroke="#F7F2D2" stroke-width="7" fill="none"/>
+    </svg>
+    <div class="badge" style="left:50%;top:96px;transform:translateX(-50%);width:170px;height:170px;">
+      <img src="/icon-512.png" width="134" height="134" alt="">
+    </div>
+    <div style="position:absolute;left:50%;top:300px;transform:translateX(-50%);text-align:center;width:980px;">
+      <div class="title" style="font-size:88px;">সার সুপারিশমালা হাতবই-<span class="yr">২০২৪</span></div>
+      <div class="sub" style="font-size:30px;margin-top:16px;">Fertilizer Recommendation Handbook 2024 • BARC</div>
+    </div>
+    <div style="position:absolute;left:50%;top:560px;transform:translateX(-50%);display:flex;gap:14px;">
+      <span class="chip" style="font-size:23px;padding:10px 24px;">২৯ কৃষি পরিবেশ অঞ্চল</span>
+      <span class="chip" style="font-size:23px;padding:10px 24px;">ফসলধারাভিত্তিক মাত্রা</span>
+    </div>
+    <div style="position:absolute;left:50%;top:626px;transform:translateX(-50%);display:flex;gap:14px;">
+      <span class="chip" style="font-size:23px;padding:10px 24px;">সার ক্যালকুলেটর</span>
+      <span class="chip" style="font-size:23px;padding:10px 24px;">মাটি পরীক্ষা নির্দেশনা</span>
+    </div>
+    <div class="offline" style="position:absolute;left:50%;top:712px;transform:translateX(-50%);font-size:27px;padding:13px 34px;">📴 ১০০% অফলাইন চলে</div>
+    <div class="band" style="height:128px;padding:0 56px;">
+      <div class="bn" style="font-size:27px;">বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)<br><span style="font-size:20px;font-weight:400;">www.barc.gov.bd</span></div>
+      <div class="url" style="font-size:22px;text-align:right;">moniruzjaman.github.io<br>/fertilizer-handbook-2024</div>
+    </div>
+  </div>
+
+  <!-- ============ Story / Reel / WhatsApp status ============ -->
+  <div class="label">story-1080x1920</div>
+  <div class="canvas" data-name="story" style="width:1080px;height:1920px;">
+    <svg class="wave" style="top:1170px;" width="1180" height="200" viewBox="0 0 1180 200">
+      <path d="M0,120 C240,30 440,205 640,115 C860,15 1000,155 1180,85 L1180,200 L0,200 Z" fill="#EAE4BA" opacity="0.92"/>
+      <path d="M0,120 C240,30 440,205 640,115 C860,15 1000,155 1180,85" stroke="#F7F2D2" stroke-width="7" fill="none"/>
+    </svg>
+    <div class="badge" style="left:50%;top:210px;transform:translateX(-50%);width:210px;height:210px;">
+      <img src="/icon-512.png" width="168" height="168" alt="">
+    </div>
+    <div style="position:absolute;left:50%;top:490px;transform:translateX(-50%);text-align:center;width:1000px;">
+      <div class="title" style="font-size:104px;">সার সুপারিশমালা<br>হাতবই-<span class="yr">২০২৪</span></div>
+      <div class="sub" style="font-size:34px;margin-top:26px;">Fertilizer Recommendation Handbook 2024 • BARC</div>
+    </div>
+    <div style="position:absolute;left:50%;top:810px;transform:translateX(-50%);text-align:center;width:960px;">
+      <div style="color:#EAF5D8;font-size:31px;font-weight:700;line-height:1.55;">আপনার এলাকা ও ফসলের<br>সঠিক সারের মাত্রা এখন হাতের মুঠোয়</div>
+    </div>
+    <div style="position:absolute;left:50%;top:960px;transform:translateX(-50%);display:flex;gap:14px;justify-content:center;">
+      <span class="chip" style="font-size:26px;padding:12px 26px;">২৯ কৃষি পরিবেশ অঞ্চল</span>
+      <span class="chip" style="font-size:26px;padding:12px 26px;">সার ক্যালকুলেটর</span>
+    </div>
+    <div style="position:absolute;left:50%;top:1044px;transform:translateX(-50%);display:flex;gap:14px;justify-content:center;">
+      <span class="chip" style="font-size:26px;padding:12px 26px;">জেলাভিত্তিক AEZ খোঁজ</span>
+      <span class="chip" style="font-size:26px;padding:12px 26px;">সম্পূর্ণ বাংলা</span>
+    </div>
+    <div class="offline" style="position:absolute;left:50%;top:1400px;transform:translateX(-50%);font-size:31px;padding:15px 38px;">📴 ইন্টারনেট ছাড়াই চলে — ১০০% অফলাইন</div>
+    <div style="position:absolute;left:50%;bottom:150px;transform:translateX(-50%);text-align:center;width:980px;">
+      <div style="color:#144D2A;font-size:30px;font-weight:900;">👉 এখনই স্ক্যান করুন বা ভিজিট করুন</div>
+      <div style="color:#0C3A20;font-size:33px;font-weight:900;margin-top:10px;">moniruzjaman.github.io/fertilizer-handbook-2024</div>
+    </div>
+    <div class="band" style="height:96px;padding:0 56px;">
+      <div class="bn" style="font-size:26px;">বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC) • www.barc.gov.bd</div>
+      <div class="url" style="font-size:21px;">সার সুপারিশমালা হাতবই-২০২৪</div>
+    </div>
+  </div>
+
+  <!-- ============ GitHub repository social preview ============ -->
+  <div class="label">github-1280x640</div>
+  <div class="canvas" data-name="github" style="width:1280px;height:640px;">
+    <svg class="wave" style="top:448px;" width="1380" height="150" viewBox="0 0 1380 150">
+      <path d="M0,92 C280,12 520,142 760,72 C1000,0 1200,112 1380,56 L1380,150 L0,150 Z" fill="#EAE4BA" opacity="0.92"/>
+      <path d="M0,92 C280,12 520,142 760,72 C1000,0 1200,112 1380,56" stroke="#F7F2D2" stroke-width="7" fill="none"/>
+    </svg>
+    <div style="position:absolute;left:58px;top:56px;max-width:680px;">
+      <div class="title" style="font-size:72px;">সার সুপারিশমালা হাতবই-<span class="yr">২০২৪</span></div>
+      <div class="sub" style="font-size:24px;margin-top:12px;">Fertilizer Recommendation Handbook 2024 • Offline PWA</div>
+    </div>
+    <div style="position:absolute;left:58px;top:398px;display:flex;gap:12px;">
+      <span class="chip" style="font-size:20px;padding:8px 18px;">AEZ ভিত্তিক মাত্রা</span>
+      <span class="chip" style="font-size:20px;padding:8px 18px;">ক্যালকুলেটর</span>
+      <span class="chip" style="font-size:20px;padding:8px 18px;">১০০% অফলাইন</span>
+    </div>
+    <div class="badge" style="right:58px;top:60px;width:150px;height:150px;">
+      <img src="/icon-512.png" width="118" height="118" alt="">
+    </div>
+    <div class="band" style="height:94px;padding:0 58px;">
+      <div class="bn" style="font-size:26px;">বাংলাদেশ কৃষি গবেষণা কাউন্সিল (BARC)</div>
+      <div class="url" style="font-size:21px;">github.com/moniruzjaman/fertilizer-handbook-2024</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

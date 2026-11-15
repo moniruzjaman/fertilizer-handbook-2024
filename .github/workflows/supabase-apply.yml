@@ -1,0 +1,43 @@
+name: Apply Supabase migrations
+
+# Auto-creates/updates the Supabase database schema from docs/supabase/migrations.
+# Safe no-op while secrets are absent — CI stays green today.
+# Setup (one time): repo Settings → Secrets → Actions →
+#   SUPABASE_PROJECT_REF + SUPABASE_ACCESS_TOKEN, then run this workflow manually.
+# After that, any push touching docs/supabase/migrations applies automatically.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "docs/supabase/migrations/**"
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check secrets present
+        id: check
+        run: |
+          if [ -n "${{ secrets.SUPABASE_PROJECT_REF }}" ] && [ -n "${{ secrets.SUPABASE_ACCESS_TOKEN }}" ]; then
+            echo "apply=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "apply=no" >> "$GITHUB_OUTPUT"
+            echo "Supabase secrets not configured — skipping (no-op)."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.apply == 'yes'
+        with:
+          node-version: 20
+
+      - name: Apply migrations via Supabase CLI
+        if: steps.check.outputs.apply == 'yes'
+        env:
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          npx --yes supabase@latest link --project-ref "$SUPABASE_PROJECT_REF"
+          npx --yes supabase@latest db push --include-all

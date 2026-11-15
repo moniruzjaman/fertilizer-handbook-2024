@@ -19,6 +19,25 @@ An offline-first Progressive Web App companion for the **BARC সার সু�
 
 The AEZ dataset was extracted from the official handbook PDF (BARC, ISBN 978-984-35-5737-7, chapter 18) — 29 AEZ tables, ~1,015 crop-pattern rows. AEZ-6 (নিম্ন পুনর্ভবা প্লাবনভূমি) is absent from the circulated PDF scan, so its table is not included. Doses are shown exactly as printed (গ্রাম/শতাংশ; জৈবসার কেজি/শতাংশ); the DAP substitution note (প্রতি কেজি ডিএপির জন্য ৪০০ গ্রাম ইউরিয়া কম) and the zinc-heptahydrate basis follow the handbook footnotes. Verify with your local SAAO/SRDI soil test before applying.
 
+## Social preview (official handbook branding)
+
+Link previews and share assets are generated from the official handbook design (BARC green `#108449` → deep green gradient, golden wave, cream band — as on the হাতবই cover). They live in `pwa/og/` and ship on Pages; `og:`/`twitter:` meta tags in `index.html` wire them up:
+
+| File | Use |
+| --- | --- |
+| `og-1200x630.png` | Web embeds, Facebook, LinkedIn, Telegram, WhatsApp |
+| `twitter-1200x675.png` | X/Twitter large-summary card |
+| `youtube-1280x720.png` | YouTube thumbnail |
+| `instagram-1080x1080.png` | Instagram/Facebook square post |
+| `story-1080x1920.png` | Instagram/Facebook/WhatsApp story |
+| `github-1280x640.png` | Repository social preview (uploaded via GitHub API) |
+
+Regenerate with the HTML source in `tools/social_previews.html` (headless Chrome screenshot → crop).
+
+## Backend migration (Firebase → local-first + Supabase)
+
+The live PWA runs **without any backend** — saved calculations stay on-device with **export/import backup** buttons (Phase 0, shipped). The full plan for the optional cloud sync lives in [`docs/BACKEND_MIGRATION_PLAN.md`](docs/BACKEND_MIGRATION_PLAN.md): a platform decision matrix, the recommended Supabase target with **auto-applied schema + RLS** (`docs/supabase/`, `.github/workflows/supabase-apply.yml` — no-op until 2 secrets are added), a 5-minute setup checklist, and the Firebase cleanup list. The old Firestore rules/blueprint remain only as legacy scaffolding until that cleanup runs.
+
 ## Project layout
 
 | Path | Purpose |

@@ -53,6 +53,11 @@
     .install-tooltip kbd { background: rgba(255,255,255,0.15); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 0.65rem; }
     .install-hint-dot { width: 8px; height: 8px; background: #FFB300; border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
+    .nav-ebook-btn { background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 8px 12px; border-radius: 24px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.2s, border-color 0.2s; text-decoration: none; }
+    .nav-ebook-btn:hover, .nav-ebook-btn:focus { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.6); }
+    .nav-ebook-btn .nav-icon { font-size: 1rem; line-height: 1; }
+    .nav-ebook-btn .nav-text { display: none; }
+    @media (min-width: 480px) { .nav-ebook-btn .nav-text { display: inline; } }
     .tabs { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; padding: 10px 14px 0; }
     .tab-btn { flex: 1; background: rgba(255,255,255,0.14); color: #E8F5E9; border: 1px solid rgba(255,255,255,0.25); padding: 9px 6px; border-radius: 10px 10px 0 0; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
     .tab-btn.active { background: var(--bg); color: var(--primary); border-color: var(--bg); }
@@ -176,6 +181,10 @@
             <div id="tooltip-content"></div>
           </div>
         </div>
+        <a href="https://moniruzjaman.github.io/frg-2024-ebook/" target="_blank" rel="noopener noreferrer" class="nav-ebook-btn" id="nav-ebook-btn" aria-label="Open FRG-2024 Visual Ebook">
+          <span class="nav-icon" aria-hidden="true">📖</span>
+          <span class="nav-text" id="nav-ebook-label">ই-বুক দেখুন</span>
+        </a>
         <button class="lang-badge" id="lang-btn" onclick="toggleLanguage()">English</button>
       </div>
     </div>
@@ -938,6 +947,7 @@
       const t = (id, en, bn) => { const el = document.getElementById(id); if (el) el.innerText = isEnglish ? en : bn; };
       t('ui-title', '🌾 Fertilizer Recommendation Handbook 2024 (PWA)', '🌾 সার সুপারিশমালা হাতবই ২০২৪ (PWA)');
       t('install-label', 'Install', 'ইন্সটল করুন');
+      t('nav-ebook-label', 'View Ebook', 'ই-বুক দেখুন');
       t('tab-btn-book', '📖 Handbook', '📖 হাতবই');
       t('tab-btn-calc', '🧮 Calculator', '🧮 ক্যালকুলেটর');
       t('tab-btn-info', 'ℹ️ Info & Safety', 'ℹ️ তথ্য ও সতর্কতা');

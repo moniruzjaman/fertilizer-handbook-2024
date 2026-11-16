@@ -41,7 +41,18 @@
     .header-title p { font-size: 0.72rem; opacity: 0.9; }
     .header-actions { display: flex; align-items: center; gap: 8px; }
     .lang-badge { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,255,255,0.4); color: white; }
-    .install-pwa-btn { background: #FFB300; color: #3E2723; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; border: none; cursor: pointer; display: none; }
+    .install-pwa-btn { background: #FFB300; color: #3E2723; padding: 8px 12px; border-radius: 24px; font-size: 0.75rem; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(255,179,0,0.4); transition: transform 0.15s, box-shadow 0.15s; }
+    .install-pwa-btn:active { transform: scale(0.96); box-shadow: 0 1px 3px rgba(255,179,0,0.4); }
+    .install-pwa-btn:hover { box-shadow: 0 3px 10px rgba(255,179,0,0.5); }
+    .install-pwa-btn .install-icon { font-size: 1rem; line-height: 1; }
+    .install-pwa-btn .install-text { display: none; }
+    @media (min-width: 480px) { .install-pwa-btn .install-text { display: inline; } }
+    .install-tooltip { position: absolute; top: 100%; right: 0; margin-top: 8px; background: #1C271E; color: #fff; padding: 12px 14px; border-radius: 10px; font-size: 0.7rem; line-height: 1.5; width: max-content; max-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.2s, visibility 0.2s, transform 0.2s; z-index: 100; pointer-events: none; }
+    .install-tooltip::before { content: ''; position: absolute; top: -6px; right: 16px; border: 6px solid transparent; border-bottom-color: #1C271E; }
+    .install-tooltip.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .install-tooltip kbd { background: rgba(255,255,255,0.15); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 0.65rem; }
+    .install-hint-dot { width: 8px; height: 8px; background: #FFB300; border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
     .tabs { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; padding: 10px 14px 0; }
     .tab-btn { flex: 1; background: rgba(255,255,255,0.14); color: #E8F5E9; border: 1px solid rgba(255,255,255,0.25); padding: 9px 6px; border-radius: 10px 10px 0 0; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
     .tab-btn.active { background: var(--bg); color: var(--primary); border-color: var(--bg); }
@@ -155,7 +166,16 @@
         <p id="ui-subtitle">BARC Fertilizer Recommendation Handbook-2024 (FRG-2024)</p>
       </div>
       <div class="header-actions">
-        <button id="pwa-install-btn" class="install-pwa-btn" onclick="triggerPwaInstall()">📲 <span id="install-label">ইন্সটল করুন</span></button>
+        <div class="install-wrapper" style="position: relative;">
+          <button id="pwa-install-btn" class="install-pwa-btn" onclick="triggerPwaInstall()" aria-label="Install app for offline use">
+            <span class="install-icon" aria-hidden="true">📥</span>
+            <span class="install-text" id="install-label">ইন্সটল করুন</span>
+            <span class="install-hint-dot" id="install-hint-dot" aria-hidden="true"></span>
+          </button>
+          <div class="install-tooltip" id="install-tooltip" role="tooltip">
+            <div id="tooltip-content"></div>
+          </div>
+        </div>
         <button class="lang-badge" id="lang-btn" onclick="toggleLanguage()">English</button>
       </div>
     </div>
@@ -512,15 +532,105 @@
       });
     }
     let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); deferredPrompt = e;
-      document.getElementById('pwa-install-btn').style.display = 'block';
-    });
-    function triggerPwaInstall() {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('pwa-install-btn').style.display = 'none'; });
+    let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    let isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    
+    // Initialize install button visibility and tooltip
+    function initInstallButton() {
+      const btn = document.getElementById('pwa-install-btn');
+      const dot = document.getElementById('install-hint-dot');
+      const tooltip = document.getElementById('install-tooltip');
+      const content = document.getElementById('tooltip-content');
+      
+      if (isStandalone) {
+        // Already installed - hide button completely
+        btn.style.display = 'none';
+        return;
+      }
+      
+      // Always show the button (not hidden by default)
+      btn.style.display = 'flex';
+      
+      // Set tooltip content based on platform
+      updateTooltipContent();
+      
+      // Show/hide tooltip on hover/focus
+      btn.addEventListener('mouseenter', () => tooltip.classList.add('visible'));
+      btn.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+      btn.addEventListener('focus', () => tooltip.classList.add('visible'));
+      btn.addEventListener('blur', () => tooltip.classList.remove('visible'));
+      
+      // Touch devices: tap to toggle tooltip
+      btn.addEventListener('click', (e) => {
+        if (isIOS || !deferredPrompt) {
+          e.preventDefault();
+          tooltip.classList.toggle('visible');
+        }
+      });
+      
+      // Hide tooltip when clicking elsewhere
+      document.addEventListener('click', (e) => {
+        if (!btn.contains(e.target) && !tooltip.contains(e.target)) {
+          tooltip.classList.remove('visible');
+        }
+      });
     }
+    
+    function updateTooltipContent() {
+      const content = document.getElementById('tooltip-content');
+      if (!content) return;
+      
+      if (isIOS) {
+        content.innerHTML = isEnglish 
+          ? '<strong>📱 iOS Installation</strong><br>Tap <kbd>Share</kbd> → <kbd>Add to Home Screen</kbd><br><small>Works offline after install</small>'
+          : '<strong>📱 iOS-এ ইন্সটল</strong><br><kbd>শেয়ার</kbd> চাপুন → <kbd>হোম স্ক্রিনে যোগ করুন</kbd><br><small>ইন্সটল হলে ১০০% অফলাইন কাজ করবে</small>';
+      } else if (deferredPrompt) {
+        content.innerHTML = isEnglish
+          ? '<strong>📲 Install App</strong><br>Tap to install for offline use<br><small>Works 100% offline after install</small>'
+          : '<strong>📲 অ্যাপ ইন্সটল করুন</strong><br>অফলাইন ব্যবহার করার জন্য ইনস্টল করুন<br><small>ইন্সটল হলে ১০০% অফলাইন কাজ করবে</small>';
+      } else {
+        content.innerHTML = isEnglish
+          ? '<strong>📱 PWA Ready</strong><br>Install from browser menu (⋮ → Install)<br><small>Works 100% offline after install</small>'
+          : '<strong>📱 PWA প্রস্তুত</strong><br>ব্রাউজার মেনু থেকে ইনস্টল করুন (⋮ → ইন্সটল)<br><small>ইন্সটল হলে ১০০% অফলাইন কাজ করবে</small>';
+      }
+    }
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); 
+      deferredPrompt = e;
+      const dot = document.getElementById('install-hint-dot');
+      if (dot) dot.style.display = 'block'; // Show pulse dot when native prompt available
+      updateTooltipContent();
+    });
+    
+    function triggerPwaInstall() {
+      if (isStandalone) return;
+      
+      if (isIOS) {
+        // On iOS, show tooltip with instructions (already handled by click event)
+        const tooltip = document.getElementById('install-tooltip');
+        tooltip.classList.toggle('visible');
+        return;
+      }
+      
+      if (!deferredPrompt) {
+        // No native prompt available, show tooltip
+        const tooltip = document.getElementById('install-tooltip');
+        tooltip.classList.toggle('visible');
+        return;
+      }
+      
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => { 
+        deferredPrompt = null; 
+        const dot = document.getElementById('install-hint-dot');
+        if (dot) dot.style.display = 'none';
+        updateTooltipContent();
+      });
+    }
+    
+    // Initialize on load
+    window.addEventListener('load', initInstallButton);
 
     // ============ AEZ helpers ============
     function aezByNo(no) { return FRG_DATA.aezs.find(a => a.no === no); }
@@ -862,6 +972,7 @@
       applyHandbookLang();
       calculateFertilizer();
       renderSavedList();
+      updateTooltipContent();
     }
 
 
